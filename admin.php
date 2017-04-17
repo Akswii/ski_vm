@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <!--<link rel="icon" href="../../favicon.ico">-->
 
-    <title>Jumbotron Template for Bootstrap</title>
+    <title>Admin</title>
 
     <!-- Bootstrap core CSS -->
     <link href="CSS/bootstrap.min.css" rel="stylesheet">
@@ -54,8 +54,30 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1 class="display-3">Hello, world!</h1>
-        
+        <h1 class="display-3">Admin page</h1>
+            Publikum
+        <form action="" method ="post">
+        <table border="1">
+        <tr>
+                <td>Navn: </td>
+                <td><input type="text" name="navn" onchange ="valider_navn()" /></td>
+            </tr>
+            <tr>
+                <td>Tlf: </td>
+                <td><input type="text" name="tlf" onchange ="valider_tlf()"/></td>
+            </tr>
+            <tr>
+                <td>Adresse: </td>
+                <td><input type="text" name="adresse" onchange ="valider_adresse()"/></td>
+            </tr>
+            <tr>
+                <td>Epost: </td>
+                <td><input type="text" name="epost" onchange ="valider_epost()"/></td>
+            </tr>
+            
+            </table>
+                    <input type="submit" name="registrer" value="registrer" />
+         </form>
       </div>
     </div>
 
@@ -78,7 +100,7 @@
       <footer>
         <p>&copy; Company 2017</p>
       </footer>
-    </div> <!-- /container -->
+    </div>
 
 
     <!-- Bootstrap core JavaScript
