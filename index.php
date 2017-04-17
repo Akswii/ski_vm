@@ -17,7 +17,7 @@
   </head>
 
   <body>
-
+    
     <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -50,10 +50,75 @@
         </form>
       </div>
     </nav>
-
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
+        Publikum
+        <form action="bekreftelse.php" method ="post">
+        <table border="1">
+        <tr>
+                <td>Navn: </td>
+                <td><input type="text" name="navn" onchange ="valider_navn()" /></td>
+            </tr>
+            <tr>
+                <td>Tlf: </td>
+                <td><input type="text" name="tlf" onchange ="valider_tlf()"/></td>
+            </tr>
+            <tr>
+                <td>Adresse: </td>
+                <td><input type="text" name="adresse" onchange ="valider_adresse()"/></td>
+            </tr>
+            <tr>
+                <td>Epost: </td>
+                <td><input type="text" name="epost" onchange ="valider_epost()"/></td>
+            </tr>
+            
+        </table>
+                    <input type="submit" name="registrer" value="registrer" />
+         </form>
+    <br>
+    Utøvere
+    <form action="" method ="post">
+        <table border="1">
+            <tr>
+                <td>Navn: </td>
+                <td><input type="text" name="navn" onchange ="valider_navn()" /></td>
+            </tr>
+            <tr>
+                <td>Øvelser: </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Langrenn</td>
+                <td><input type="checkbox" name="ovelse" value="langrenn" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Skiskyting</td>
+                <td><input type="checkbox" name="ovelse" value="skiskyting" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>skihopp</td>
+                <td><input type="checkbox" name="ovelse" value="skihopp" /></td>
+            </tr>
+        </table>
+                    <input type="submit" name="registrer" value="registrer" />
+         </form>
+         <?php
+         $db = mysqli_connect("localhost", "root", "", "ski-vm");
+         
+         $navn = $_REQUEST["navn"];
+         $tlf = $_REQUEST["tlf"];
+         $adresse = $_REQUEST["adresse"];
+         $epost = $_REQUEST["epost"];
+         
+         $sql = "Insert INTO publikum(navn,tlf,epost,adresse)";
+                $sql .= "Values('$navn','$tlf','$epost','$adresse')";
+                $resultat = mysqli_query($db, $sql);
+         ?>
         <h1 class="display-3">Hello, world!</h1>
         
       </div>
