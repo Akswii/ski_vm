@@ -53,25 +53,103 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
+        <?php
+            $db = mysqli_connect("localhost", "root", "", "ski-vm");
+            if($_SERVER["REQUEST_METHOD"] == "POST")
+            {
+            // username and password sent from Form
+            $username=mysqli_real_escape_string($db,$_POST['username']); 
+            $password=mysqli_real_escape_string($db,$_POST['password']); 
+            $password=md5($password); // Encrypted Password
+            $sql="Insert into innlogging(brukernavn,passord) values('$username','$password');";
+            $result=mysqli_query($db,$sql);
+            echo "Registration Successfully";
+            }
+            ?>
+            <form action="" method="post">
+            <label>UserName :</label>
+            <input type="text" name="username"/><br />
+
+
+            <label>Password :</label>
+            <input type="password" name="password"/><br/>
+            <input type="submit" value=" Registration "/><br />
+            </form>
+        <?php
+            $db = mysqli_connect("localhost", "root", "", "ski-vm");
+            session_start();
+            if($_SERVER["REQUEST_METHOD"] == "POST")
+            {
+            // username and password sent from Form
+            $username=mysqli_real_escape_string($db,$_POST['username']); 
+            $password=mysqli_real_escape_string($db,$_POST['password']); 
+            $password=md5($password); // Encrypted Password
+            $sql="SELECT brukernavn FROM innlogging WHERE brukernavn='$username' and passord='$password'";
+            $result=mysqli_query($db,$sql);
+            $count=mysqli_num_rows($db,$result);
+
+            // If result matched $username and $password, table row must be 1 row
+            if($count==1)
+            {
+            header("location: admin.php");
+            }
+            else 
+            {
+            $error="Your Login Name or Password is invalid";
+            }
+            }
+            ?>
+            <form action="" method="post">
+            <label>UserName :</label>
+            <input type="text" name="username"/><br />
+            <label>Password :</label>
+            <input type="password" name="password"/><br/>
+            <input type="submit" value=" Login "/><br />
+            </form>
+          
         Publikum
-        <form action="bekreftelse.php" method ="post">
+        <form action="" method ="post">
         <table border="1">
-        <tr>
+            <tr>
                 <td>Navn: </td>
                 <td><input type="text" name="navn" onchange ="valider_navn()" /></td>
+                <td></td>
             </tr>
             <tr>
                 <td>Tlf: </td>
                 <td><input type="text" name="tlf" onchange ="valider_tlf()"/></td>
+                <td></td>
             </tr>
             <tr>
                 <td>Adresse: </td>
                 <td><input type="text" name="adresse" onchange ="valider_adresse()"/></td>
+                <td></td>
             </tr>
             <tr>
                 <td>Epost: </td>
                 <td><input type="text" name="epost" onchange ="valider_epost()"/></td>
+                <td></td>
             </tr>
+            <tr>
+                <td>Øvelser: </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <?php
+                $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                $resultPublikum = $db->query("select * from ovelser");
+            
+                while ($row = $resultPublikum->fetch_assoc()) {
+                      unset($name);
+                      $name = $row['ovelse'];
+                      
+                      echo '<tr>';
+                      echo '<td></td>';
+                      echo '<td>'.$name.'</td>';
+                      echo '<td><input type="checkbox" name="ovelser[]" id="ovelser" value='.$name.' /></td>';
+                      echo '</tr>';
+            }
+                ?>
             
         </table>
                     <input type="submit" name="registrer" value="registrer" />
@@ -83,42 +161,137 @@
             <tr>
                 <td>Navn: </td>
                 <td><input type="text" name="navn" onchange ="valider_navn()" /></td>
+                <td></td>
             </tr>
             <tr>
                 <td>Øvelser: </td>
                 <td></td>
                 <td></td>
             </tr>
-            <tr>
-                <td></td>
-                <td>Langrenn</td>
-                <td><input type="checkbox" name="ovelse" value="langrenn" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Skiskyting</td>
-                <td><input type="checkbox" name="ovelse" value="skiskyting" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>skihopp</td>
-                <td><input type="checkbox" name="ovelse" value="skihopp" /></td>
-            </tr>
+            <?php
+                $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                $resultUtover = $db->query("select * from ovelser");
+            
+                while ($row = $resultUtover->fetch_assoc()) {
+                      unset($name);
+                      $name = $row['ovelse'];
+                      
+                      echo '<tr>';
+                      echo '<td></td>';
+                      echo '<td>'.$name.'</td>';
+                      echo '<td><input type="checkbox" name='.$name.' value='.$name.' /></td>';
+                      echo '</tr>';
+            }
+                ?>
         </table>
                     <input type="submit" name="registrer" value="registrer" />
          </form>
          <?php
          $db = mysqli_connect("localhost", "root", "", "ski-vm");
+         if(isset($_REQUEST["registrer"])) {
+         
          
          $navn = $_REQUEST["navn"];
          $tlf = $_REQUEST["tlf"];
          $adresse = $_REQUEST["adresse"];
          $epost = $_REQUEST["epost"];
+         $test = $_REQUEST["ovelser"];
+         $ovelser = "";
          
-         $sql = "Insert INTO publikum(navn,tlf,epost,adresse)";
-                $sql .= "Values('$navn','$tlf','$epost','$adresse')";
+            foreach ($test as $ovelse){
+                echo $ovelse.", ";
+                $ovelser.=$ovelse.", ";
+            }
+         
+        $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
+                $sql .= "Values('$navn','$tlf','$epost','$adresse','$ovelser')";
                 $resultat = mysqli_query($db, $sql);
+                
+                if(!$resultat){
+                    echo "Error";
+                }
+                
+        
+         }
+
          ?>
+         <form action="" method ="post">
+             <table border="1">
+         <?php
+                $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                $resultPrintp = $db->query("select * from ovelser");
+            
+                while ($row = $resultPrintp->fetch_assoc()) {
+                      unset($name);
+                      $name = $row['ovelse'];
+                      
+                      echo '<tr>';
+                      echo '<td>'.$name.'</td>';
+                      echo '<td><input type="radio" name="ovelser[]" id="ovelser" value='.$name.' /></td>';
+                      echo '</tr>';
+            }
+            echo '</table>';
+            if(isset($_REQUEST["registrer3"])) {
+            $test = $_REQUEST["ovelser"];
+            $print = "";
+            
+            echo "<br><br>";
+            foreach ($test as $ovelse){
+                $print.=$ovelse;
+                echo "Øvelsen ".$print." har dette publikumet:<br><br>";
+            }
+            
+            $resultUtskriftp = $db->query("SELECT navn FROM publikum WHERE ovelser LIKE '%$print%'");
+            while ($row = $resultUtskriftp->fetch_assoc()) {
+                      unset($name);
+                      $name = $row['navn'];
+                      echo $name.", ";
+            }
+            }
+            
+        ?>
+             <br>
+            <input type="submit" name="registrer3" value="registrer" />
+    </form>
+    <form action="" method ="post">
+             <table border="1">
+         <?php
+                $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                $resultPrintu = $db->query("select * from ovelser");
+            
+                while ($row = $resultPrintu->fetch_assoc()) {
+                      unset($name);
+                      $name = $row['ovelse'];
+                      
+                      echo '<tr>';
+                      echo '<td>'.$name.'</td>';
+                      echo '<td><input type="radio" name="ovelser[]" id="ovelser" value='.$name.' /></td>';
+                      echo '</tr>';
+            }
+            echo '</table>';
+            if(isset($_REQUEST["registrer4"])) {
+                $test = $_REQUEST["ovelser"];
+                $print = "";
+
+                echo "<br><br>";
+                foreach ($test as $ovelse){
+                    $print.=$ovelse;
+                    echo "Øvelsen ".$print." har disse utøverene:<br><br>";
+            }
+            
+            $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$print%'");
+            while ($row = $resultUtskriftu->fetch_assoc()) {
+                      unset($name);
+                      $name = $row['Navn'];
+                      echo $name.", ";
+            }
+            }
+            
+        ?>
+             <br>
+            <input type="submit" name="registrer4" value="registrer" />
+    </form>
+    
         <h1 class="display-3">Hello, world!</h1>
         
       </div>

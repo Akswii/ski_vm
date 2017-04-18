@@ -17,14 +17,7 @@ class Ovelser {
                 
                 public function set_ovelse ($ovelse) {$this->ovelse=$ovelse;}
                 public function set_tidspunkt ($tidspunkt) {$this->tidspunkt=$tidspunkt;}
-<<<<<<< HEAD
                 public function set_dato ($dato) {$this->dato=$dato;}         
 }
 
 
-=======
-                public function set_dato ($dato) {$this->dato=$dato;}
-                
-                
-}
->>>>>>> morten
