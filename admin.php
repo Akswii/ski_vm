@@ -93,42 +93,53 @@
              </form>
            </div>
         
+        
         <div id="ovelsetabell">
-            <table id="tabell">
-                <col width="">
-                <col width="">
-                <col width="20">
-                <tr>
-                    <th>Øvelse</th>
-                    <th>Dato</th>
-                    <th>Tidspunkt</th>
-                </tr>
-                
-                <?php
-                include 'db_connect.php';
-                $result = $db->query("select * from ovelser");
+           <form action='' method ='post'>
+                <table id="tabell">
+                    <col width="">
+                    <col width="">
+                    <col width="20">
+                    <tr>
+                        <th>Øvelse</th>
+                        <th>Dato</th>
+                        <th>Tidspunkt</th>
+                    </tr>
 
-                while ($row = $result->fetch_assoc()) {
-                          $navn = $row['navn'];
-                          $tidspunkt = $row['tid'];
-                          $dato = $row['dato'];
-                          
-                          echo "<tr><td>".$navn."</td>"."<td>".$dato."</td>"."<td>".$tidspunkt."</td>"."<td>"
-                                  . "<form action='' method ='post'>"
-                                  . "<input type='image' name ='slett' src='d_button.png' alt='Submit' id='slett_btn'/>"
-                                  . "</form></td></tr>";
-                          
-                if(isset($_REQUEST['slett_y'])){
-                        echo '<script language="javascript">';
-                        echo 'alert("message successfully sent")';
-                        echo '</script>';
-                }
-                }
-                ?>
-            </table>
-        <?php
+                    <?php //tabellkode /slettknapper /dbqueries
+                    include 'db_connect.php';
+                    $result = $db->query("select * from ovelser");
+
+                    while ($row = $result->fetch_assoc()) {
+                              $id = $row['ovelses_id'];
+                              $navn = $row['navn'];
+                              $tidspunkt = $row['tid'];
+                              $dato = $row['dato'];
+
+                              /*echo "<tr><td>".$navn."</td>"."<td>".$dato."</td>"."<td>".$tidspunkt."</td>"."<td>"
+                                      . "<form action='' method ='post'>"
+                                      . "<input type='image' name ='slett' src='d_button.png' alt='Submit' id='slett_btn'/>"
+                                      . "</form></td></tr>";*/
+
+                                echo "<tr><td>".$navn."</td>"."<td>".$dato."</td>"."<td>".$tidspunkt."</td>"."<td>"
+                                      ."<input type='checkbox' name ='slett[]' id='slett_select'/></td></tr>";
+
+                    }
+                    ?>
+                </table>
+                <input type='submit' name='slett' value='slett'/>
+            </form>
+            
+        <?php //legge til ny øvelse ol. funksjonalitet
         include 'db_connect.php';
-            //if(isset($_POST['hello_x']))
+        
+            if(isset($_REQUEST['slett'])){
+                        //$result = $db->query("select * from ovelser where ");
+                            echo '<script language="javascript">';
+                            echo 'alert("message successfully sent")';
+                            echo '</script>';
+                    }
+            
             if(isset($_REQUEST['registrer']))
             {
                 $navn = $_REQUEST['onavn'];
@@ -152,7 +163,7 @@
                     else 
                     {
                         echo '<script language="javascript">';
-                        echo 'alert(message successfully sent)';
+                        echo 'alert("message successfully sent")';
                         echo '</script>';
                     }
                 }
