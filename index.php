@@ -44,68 +44,67 @@
             </div>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          <form class="form-inline my-2 my-lg-0" action="" method="post">
+    <!--Oppdater passord: <br/>
+    Brukernavn : <input type="text" name="lagreBrukernavn"/><br/>
+    Passord : <input type="password" name="lagrePassord"/><br/>
+    Navn : <input type="text" name="lagreNavn"/><br/>
+    <input type="submit" name="lagre" value="Oppdater passord"/><br/>-->
+        <?php
+        session_start();
+        $db= new mysqli("localhost","root","","ski-vm");
+        if($db->connect_error)
+        {
+            die("Kunne ikke knytte til db!");
+        }
+        /*if(isset($_POST["lagre"]))
+        {
+            $lagreBrukernavn = $_POST["lagreBrukernavn"];
+            $lagrePassord = $_POST["lagrePassord"];
+            $lagreNavn = $_REQUEST["lagreNavn"];
+
+            $sql = "Update innlogging Set passord = Password('$lagrePassord'), navn = '$lagreNavn' where brukernavn='$lagreBrukernavn'";
+            $res = $db->query($sql);
+            if($db->affected_rows>0)
+            {
+                echo "Oppdatering OK";
+            }
+            else
+            {
+                echo "Oppdatering ikke OK";
+            }
+        }*/
+        if(isset($_POST["sjekk"]))
+        {
+            $sjekkBrukernavn = $db->escape_string($_POST["sjekkBrukernavn"]);
+            $sjekkPassord = $db->escape_string($_POST["sjekkPassord"]);
+            
+            $sql = "Select * from innlogging where brukernavn='$sjekkBrukernavn' AND Passord=Password('$sjekkPassord')";
+            echo "$sql<br/>";
+            $res = $db->query($sql);
+            if($db->affected_rows>0)
+            {
+                
+                $_SESSION["login"]=true;
+                Header("location: admin.php");
+            }
+            else
+            {
+                echo "Feil passord";
+                $_SESSION["login"]=false;
+            }
+        }
+        ?>
+          <input type="text" name="sjekkBrukernavn" placeholder="Brukernavn"/><br/>
+          <input type="password" name="sjekkPassord" placeholder="Passord"/><br/>
+          <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="login" name="sjekk">
         </form>
       </div>
     </nav>
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <?php
-            $db = mysqli_connect("localhost", "root", "", "ski-vm");
-            if($_SERVER["REQUEST_METHOD"] == "POST")
-            {
-            // username and password sent from Form
-            $username=mysqli_real_escape_string($db,$_POST['username']); 
-            $password=mysqli_real_escape_string($db,$_POST['password']); 
-            $password=md5($password); // Encrypted Password
-            $sql="Insert into innlogging(brukernavn,passord) values('$username','$password');";
-            $result=mysqli_query($db,$sql);
-            echo "Registration Successfully";
-            }
-            ?>
-            <form action="" method="post">
-            <label>UserName :</label>
-            <input type="text" name="username"/><br />
-
-
-            <label>Password :</label>
-            <input type="password" name="password"/><br/>
-            <input type="submit" value=" Registration "/><br />
-            </form>
-        <?php
-            $db = mysqli_connect("localhost", "root", "", "ski-vm");
-            session_start();
-            if($_SERVER["REQUEST_METHOD"] == "POST")
-            {
-            // username and password sent from Form
-            $username=mysqli_real_escape_string($db,$_POST['username']); 
-            $password=mysqli_real_escape_string($db,$_POST['password']); 
-            $password=md5($password); // Encrypted Password
-            $sql="SELECT brukernavn FROM innlogging WHERE brukernavn='$username' and passord='$password'";
-            $result=mysqli_query($db,$sql);
-            $count=mysqli_num_rows($db,$result);
-
-            // If result matched $username and $password, table row must be 1 row
-            if($count==1)
-            {
-            header("location: admin.php");
-            }
-            else 
-            {
-            $error="Your Login Name or Password is invalid";
-            }
-            }
-            ?>
-            <form action="" method="post">
-            <label>UserName :</label>
-            <input type="text" name="username"/><br />
-            <label>Password :</label>
-            <input type="password" name="password"/><br/>
-            <input type="submit" value=" Login "/><br />
-            </form>
+        
           
         Publikum
         <form action="" method ="post">
@@ -155,7 +154,7 @@
                     <input type="submit" name="registrer" value="registrer" />
          </form>
     <br>
-    Utøvere
+    <!--Utøvere
     <form action="" method ="post">
         <table border="1">
             <tr>
@@ -169,7 +168,7 @@
                 <td></td>
             </tr>
             <?php
-                $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                /*$db = mysqli_connect("localhost", "root", "", "ski-vm");
                 $resultUtover = $db->query("select * from ovelser");
             
                 while ($row = $resultUtover->fetch_assoc()) {
@@ -181,11 +180,11 @@
                       echo '<td>'.$name.'</td>';
                       echo '<td><input type="checkbox" name='.$name.' value='.$name.' /></td>';
                       echo '</tr>';
-            }
+            }*/
                 ?>
         </table>
                     <input type="submit" name="registrer" value="registrer" />
-         </form>
+         </form>-->
          <?php
          $db = mysqli_connect("localhost", "root", "", "ski-vm");
          if(isset($_REQUEST["registrer"])) {
@@ -202,6 +201,20 @@
                 echo $ovelse.", ";
                 $ovelser.=$ovelse.", ";
             }
+            
+        if(!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
+                echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
+                $OK=false; 
+        }
+        else if(!preg_match("/^[0-9]{8}$/", $tlf)) {
+                echo "Feil i nummeret, du må ha 8 tegn!<br/>";
+                $OK=false; 
+        }
+        else if(!preg_match("/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/", $epost)) {
+                echo "Feil i epost, du må ha @ og ha nok tegn i eposten!<br/>";
+                $OK=false; 
+        }
+        else {
          
         $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
                 $sql .= "Values('$navn','$tlf','$epost','$adresse','$ovelser')";
@@ -211,14 +224,14 @@
                     echo "Error";
                 }
                 
-        
+        }
          }
 
          ?>
-         <form action="" method ="post">
+         <!--<form action="" method ="post">
              <table border="1">
          <?php
-                $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                /*$db = mysqli_connect("localhost", "root", "", "ski-vm");
                 $resultPrintp = $db->query("select * from ovelser");
             
                 while ($row = $resultPrintp->fetch_assoc()) {
@@ -248,11 +261,11 @@
                       echo $name.", ";
             }
             }
-            
+            */
         ?>
              <br>
             <input type="submit" name="registrer3" value="registrer" />
-    </form>
+    </form>-->
     <form action="" method ="post">
              <table border="1">
          <?php
