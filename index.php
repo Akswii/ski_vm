@@ -225,28 +225,28 @@
                       unset($name);
                       $name = $row['ovelse'];
                       
-                      echo '<tr>';
-                      echo '<td>'.$name.'</td>';
-                      echo '<td><input type="radio" name="ovelser[]" id="ovelser" value='.$name.' /></td>';
-                      echo '</tr>';
+                      echo "<tr>";
+                      echo "<td>".$name."</td>";
+                      echo "<td><input type='radio' name='ovelser[]' id='ovelser' value=$name /></td>";
+                      echo "</tr>";
             }
-            echo '</table>';
-            if(isset($_REQUEST["registrer3"])) {
-            $test = $_REQUEST["ovelser"];
-            $print = "";
-            
-            echo "<br><br>";
-            foreach ($test as $ovelse){
-                $print.=$ovelse;
-                echo "Øvelsen ".$print." har dette publikumet:<br><br>";
-            }
-            
-            $resultUtskriftp = $db->query("SELECT navn FROM publikum WHERE ovelser LIKE '%$print%'");
-            while ($row = $resultUtskriftp->fetch_assoc()) {
-                      unset($name);
-                      $name = $row['navn'];
-                      echo $name.", ";
-            }
+            echo "</table>";
+                if(isset($_REQUEST['registrer3'])) {
+                $test = $_REQUEST['ovelser'];
+                $print = "";
+
+                echo "<br><br>";
+                foreach ($test as $ovelse){
+                    $print.=$ovelse;
+                    echo "Øvelsen ".$print." har dette publikumet:<br><br>";
+                }
+
+                $resultUtskriftp = $db->query("SELECT navn FROM publikum WHERE ovelser LIKE '%$print%'");
+                while ($row = $resultUtskriftp->fetch_assoc()) {
+                          unset($name);
+                          $name = $row['navn'];
+                          echo $name.", ";
+                }
             }
             
         ?>
@@ -255,39 +255,39 @@
     </form>
     <form action="" method ="post">
              <table border="1">
-         <?php
-                $db = mysqli_connect("localhost", "root", "", "ski-vm");
-                $resultPrintu = $db->query("select * from ovelser");
-            
-                while ($row = $resultPrintu->fetch_assoc()) {
-                      unset($name);
-                      $name = $row['ovelse'];
-                      
-                      echo '<tr>';
-                      echo '<td>'.$name.'</td>';
-                      echo '<td><input type="radio" name="ovelser[]" id="ovelser" value='.$name.' /></td>';
-                      echo '</tr>';
-            }
-            echo '</table>';
-            if(isset($_REQUEST["registrer4"])) {
-                $test = $_REQUEST["ovelser"];
-                $print = "";
+                <?php
+                       $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                       $resultPrintu = $db->query("select * from ovelser");
 
-                echo "<br><br>";
-                foreach ($test as $ovelse){
-                    $print.=$ovelse;
-                    echo "Øvelsen ".$print." har disse utøverene:<br><br>";
-            }
-            
-            $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$print%'");
-            while ($row = $resultUtskriftu->fetch_assoc()) {
-                      unset($name);
-                      $name = $row['Navn'];
-                      echo $name.", ";
-            }
-            }
-            
-        ?>
+                       while ($row = $resultPrintu->fetch_assoc()) {
+                             unset($name);
+                             $name = $row['ovelse'];
+
+                             echo '<tr>';
+                             echo '<td>'.$name.'</td>';
+                             echo '<td><input type="radio" name="ovelser[]" id="ovelser" value='.$name.' /></td>';
+                             echo '</tr>';
+                   }
+                   echo '</table>';
+                   if(isset($_REQUEST["registrer4"])) {
+                       $test = $_REQUEST["ovelser"];
+                       $print = "";
+
+                       echo "<br><br>";
+                       foreach ($test as $ovelse){
+                           $print.=$ovelse;
+                           echo "Øvelsen ".$print." har disse utøverene:<br><br>";
+                   }
+
+                   $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$print%'");
+                   while ($row = $resultUtskriftu->fetch_assoc()) {
+                             unset($name);
+                             $name = $row['Navn'];
+                             echo $name.", ";
+                   }
+                   }
+
+               ?>
              <br>
             <input type="submit" name="registrer4" value="registrer" />
     </form>

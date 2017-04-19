@@ -13,6 +13,12 @@ body {
     background-color:lightgreen;
 }
 
+#utover_boks{
+    margin-top:2rem;
+    border: 1px solid black;
+    background-color:lightcoral;
+}
+
 #sidebunn{
     clear: both;
 }

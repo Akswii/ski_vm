@@ -1,4 +1,3 @@
-<?phpsession_start();?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -90,7 +89,7 @@
                 </tr>
 
                 </table>
-                        <input type="submit" name="registrer" value="registrer"/>
+                        <input type="submit" name="registrer_ovelse" value="registrer"/>
            
                 <table id="tabell">
                     <col width=""/>
@@ -106,7 +105,7 @@
                     <?php //tabellkode /slettknapper /dbqueries
                     include 'db_connect.php';
                     
-                    if(isset($_REQUEST['slett_knp'])){ //slett funksjon
+                    if(isset($_REQUEST['slett_knp'])){ //slette øvelse 
                         $boks_id = $_REQUEST['valg_id'];
                         
                         foreach($boks_id as $valgt){
@@ -114,16 +113,13 @@
                         }
                     }
                     
-                    if(isset($_REQUEST['oppdater_knp'])){ //oppdater funksjon                        
+                    if(isset($_REQUEST['oppdater_knp'])){ //oppdater øvelse
                         $navn = $_REQUEST['onavn'];
                         $datoen = $_REQUEST['dato'];
                         $tpunkt = $_REQUEST['tidspunkt'];
 
                         $boks_id = $_REQUEST['valg_id'];
-                        $print = "";
                         foreach($boks_id as $valgt){
-                            $print .= $valgt;
-                            echo $valgt;
                             $sql="UPDATE `ovelser` SET `navn`='$navn',`dato`='$datoen',`tid`='$tpunkt' WHERE ovelses_id = '$valgt'";
                             $resultat = $db->query($sql);
 
@@ -146,7 +142,34 @@
                         }
                     }
                     
-                    $result = $db->query("select * from ovelser");
+                    if(isset($_REQUEST['registrer_ovelse']))//registrere ny øvelse
+                    {
+                        $navn = $_REQUEST['onavn'];
+                        $dato = $_REQUEST['dato'];
+                        $tpunkt = $_REQUEST['tidspunkt'];
+
+                        $sql = "Insert INTO ovelser(navn,dato,tid)Values('$navn','$dato','$tpunkt')";
+                        $resultat = $db->query($sql);
+
+                        if(!$resultat)
+                        {
+                            echo "Error";
+                        }
+                        else
+                        {
+                            $antallRader = $db->affected_rows;
+                            if($antallRader <= 0)
+                            {
+                                echo "kunne ikke sette inn dataene i databasen!";
+                            }
+                            else 
+                            {
+                                echo "oppdatert";
+                            }
+                        }
+                    }
+                    
+                    $result = $db->query("select * from ovelser");//skrive ut alle øvelser
                     while ($row = $result->fetch_assoc()) {
                               $id = $row['ovelses_id'];
                               $navn = $row['navn'];
@@ -163,39 +186,106 @@
                 <input type='submit' name='oppdater_knp' value='Oppdater'/>
             </form>
           </div>
-            
-            
-        <?php //legge til ny øvelse ol. funksjonalitet
-        include 'db_connect.php';
-           if(isset($_REQUEST['registrer']))
-            {
-                $navn = $_REQUEST['onavn'];
-                $dato = $_REQUEST['dato'];
-                $tpunkt = $_REQUEST['tidspunkt'];
-
-                $sql = "Insert INTO ovelser(navn,dato,tid)Values('$navn','$dato','$tpunkt')";
-                $resultat = $db->query($sql);
-
-                if(!$resultat)
-                {
-                    echo "Error";
-                }
-                else
-                {
-                    $antallRader = $db->affected_rows;
-                    if($antallRader <= 0)
-                    {
-                        echo "kunne ikke sette inn dataene i databasen!";
-                    }
-                    else 
-                    {
-                        echo "oppdatert";
-                    }
-                }
-            }
-            ?>
         
-    </div>
+        <div id="utover_boks"> <!-- Div for utøverregistrering og funksjoner for det -->
+            Utøvere
+        <form action="" method ="post">
+            <table border="1">
+                <tr>
+                    <td>Navn: </td>
+                    <td><input type="text" name="u_navn" onchange ="valider_navn()" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Øvelser: </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <?php
+                    include 'db_connect.php';
+                    $resultUtover = $db->query("select * from ovelser");
+
+                    while ($row = $resultUtover->fetch_assoc()) {
+                          $u_name = $row['navn'];
+
+                          echo '<tr>';
+                          echo '<td></td>';
+                          echo '<td>'.$u_name.'</td>';
+                          echo '<td><input type="checkbox" name="valg_id[]" value='.$u_name.' /></td>';
+                          echo '</tr>';
+                }
+                    ?>
+            </table>
+                        <input type="submit" name="registrer_utover" value="registrer" />
+             </form>
+            
+            <form action="" method ="post">
+                <table border="1">
+                    <?php
+                    include 'db_connect.php';
+                            if(isset($_REQUEST['registrer_utover'])){//registrere ny utøver
+                                $navn = $_REQUEST['u_navn'];
+                                $valgt_ovelser = "";
+                                
+                                $boks_id = $_REQUEST['valg_id'];
+                                foreach($boks_id as $valgt){
+                                    $valgt_ovelser.=$valgt.",";
+                                }echo $valgt_ovelser;
+                                
+                                $sql = "Insert INTO utovere(Navn,ovelser)Values('$navn','$valgt_ovelser')";
+                                    $resultat = $db->query($sql);
+
+                                    if(!$resultat)
+                                    {
+                                        echo "Error";
+                                    }
+                                    else
+                                    {
+                                        $antallRader = $db->affected_rows;
+                                        if($antallRader <= 0)
+                                        {
+                                            echo "kunne ikke sette inn dataene i databasen!";
+                                        }
+                                        else 
+                                        {
+                                            echo "oppdatert";
+                                        }
+                                    }
+                            }
+                           $resultPrintu = $db->query("select * from ovelser");
+                           
+                           echo "<select name='select'>";
+                           
+                           while ($row = $resultPrintu->fetch_assoc()) {
+                                $o_name = $row['navn'];
+
+                                echo "<option value='".$o_name."'>".$o_name."</option>";
+                       }
+                       echo "</select>";
+                       ?></table>
+                       <?php
+                       if(isset($_REQUEST["skrivut_odeltagere"])) {
+                            $d_valg = $_REQUEST["select"];
+                            echo "Øvelsen ".$d_valg." har disse utøverene:<br><br>";
+                       
+
+                            $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$d_valg%'");
+                            while ($row = $resultUtskriftu->fetch_assoc()) {
+                                unset($name);
+                                $name = $row['Navn'];
+                                echo $name.", ";
+                            }
+                        }
+                   ?>
+                 <br>
+                <input type="submit" name="skrivut_odeltagere" value="registrer" />
+                </form>
+            </div>
+          </div>
+        
+        <div id="publikum_oversikt"> <!-- Div for utskrift av publikumdeltagelse -->
+            
+        </div>
     </div>
 
     <div class="container">
