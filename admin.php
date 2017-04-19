@@ -1,3 +1,4 @@
+<?phpsession_start();?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -85,21 +86,17 @@
                 </tr>
                 <tr>
                     <td>Tidspunkt: </td>
-                    <td><input type="text" name="tidspunkt" onchange ="valider_tidspunkt()"/></td>
+                    <td><input type="time" name="tidspunkt" onchange ="valider_tidspunkt()"/></td>
                 </tr>
 
                 </table>
                         <input type="submit" name="registrer" value="registrer"/>
-             </form>
-           </div>
-        
-        
-        <div id="ovelsetabell">
-           <form action='' method ='post'>
+           
                 <table id="tabell">
-                    <col width="">
-                    <col width="">
-                    <col width="20">
+                    <col width=""/>
+                    <col width=""/>
+                    <col width="200"/>
+                    <col width="40"/>
                     <tr>
                         <th>Øvelse</th>
                         <th>Dato</th>
@@ -108,19 +105,48 @@
 
                     <?php //tabellkode /slettknapper /dbqueries
                     include 'db_connect.php';
-                    $result = $db->query("select * from ovelser");
                     
-                    if(isset($_REQUEST['slett_knp'])){
-                        $boks_id = $_REQUEST['slett'];
-                        $print = "";
-
-                        foreach($boks_id as $test_id){
-                            $print.=$test_id;
-                            $slett_ovelse=$db->query("DELETE FROM ovelser where ovelses_id = $test_id");
-                            echo $print;
+                    if(isset($_REQUEST['slett_knp'])){ //slett funksjon
+                        $boks_id = $_REQUEST['valg_id'];
+                        
+                        foreach($boks_id as $valgt){
+                            $db->query("DELETE FROM ovelser where ovelses_id = '$valgt'");
                         }
                     }
+                    
+                    if(isset($_REQUEST['oppdater_knp'])){ //oppdater funksjon                        
+                        $navn = $_REQUEST['onavn'];
+                        $datoen = $_REQUEST['dato'];
+                        $tpunkt = $_REQUEST['tidspunkt'];
 
+                        $boks_id = $_REQUEST['valg_id'];
+                        $print = "";
+                        foreach($boks_id as $valgt){
+                            $print .= $valgt;
+                            echo $valgt;
+                            $sql="UPDATE `ovelser` SET `navn`='$navn',`dato`='$datoen',`tid`='$tpunkt' WHERE ovelses_id = '$valgt'";
+                            $resultat = $db->query($sql);
+
+                            if(!$resultat)
+                            {
+                                echo "Error";
+                            }
+                            else
+                            {
+                                $antallRader = $db->affected_rows;
+                                if($antallRader <= 0)
+                                {
+                                    echo "kunne ikke sette inn dataene i databasen!";
+                                }
+                                else 
+                                {
+                                    echo "oppdatert";
+                                }
+                            }
+                        }
+                    }
+                    
+                    $result = $db->query("select * from ovelser");
                     while ($row = $result->fetch_assoc()) {
                               $id = $row['ovelses_id'];
                               $navn = $row['navn'];
@@ -128,13 +154,15 @@
                               $dato = $row['dato'];
 
                                 echo "<tr><td>".$navn."</td>"."<td>".$dato."</td>"."<td>".$tidspunkt."</td>"."<td>"
-                                      ."<input type='checkbox' name ='slett[]' value='$id' id='slett_select'/></td></tr>";
+                                      ."<input type='checkbox' name ='valg_id[]' value='$id' id='slett_select'/></td></tr>";
 
                     }
                     ?>
                 </table>
-                <input type='submit' name='slett_knp' value='slett_knp'/>
-                </form>
+                <input type='submit' name='slett_knp' value='Slett'/>
+                <input type='submit' name='oppdater_knp' value='Oppdater'/>
+            </form>
+          </div>
             
             
         <?php //legge til ny øvelse ol. funksjonalitet
@@ -161,12 +189,12 @@
                     }
                     else 
                     {
-                        
+                        echo "oppdatert";
                     }
                 }
             }
             ?>
-        </div>
+        
     </div>
     </div>
 

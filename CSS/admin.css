@@ -18,7 +18,7 @@ body {
 }
 
 #tabell{
-    width: 100%;
+    width: 50%;
     background-color:lightblue;
 }
 
@@ -33,15 +33,4 @@ table td:first-child {
 
 table td:last-child {
      border-right: thin solid;
-}
-
-#slett_select{
-    width: 1rem;
-    height: 1rem;
-    margin-top: 0.5rem;
-    padding: none;
-    border: 0;
-    text-indent: -1000em;
-    cursor: pointer; /* hand-shaped cursor */
-    cursor: hand; /* for IE 5.x */
 }
