@@ -1,3 +1,4 @@
+<?phpsession_start();?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,7 +14,23 @@
     <link href="CSS/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="CSS/jumbotron.css" rel="stylesheet">
+    <link href="CSS/admin.css" rel="stylesheet">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+        <style type="text/css">
+            tr.header
+            {
+                font-weight:bold;
+            }
+            tr.alt
+            {
+                background-color: #777777;
+            }
+        </style>
+        <script type="text/javascript">
+            $(document).ready(function(){
+               $('.striped tr:even').addClass('alt');
+            });
+        </script>
   </head>
 
   <body>
@@ -54,31 +71,131 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-        <h1 class="display-3">Admin page</h1>
-            Publikum
-        <form action="" method ="post">
-        <table border="1">
-        <tr>
-                <td>Navn: </td>
-                <td><input type="text" name="navn" onchange ="valider_navn()" /></td>
-            </tr>
+          <h1 class="display-3">Admin page</h1>
+          <div id ="inputfelt">
+                Legg til øvelse
+            <form action="" method ="post">
+            <table border="1">
             <tr>
-                <td>Tlf: </td>
-                <td><input type="text" name="tlf" onchange ="valider_tlf()"/></td>
-            </tr>
-            <tr>
-                <td>Adresse: </td>
-                <td><input type="text" name="adresse" onchange ="valider_adresse()"/></td>
-            </tr>
-            <tr>
-                <td>Epost: </td>
-                <td><input type="text" name="epost" onchange ="valider_epost()"/></td>
-            </tr>
+                    <td>Øvelsesnavn: </td>
+                    <td><input type="text" name="onavn" onchange ="valider_onavn()" /></td>
+                </tr>
+                <tr>
+                    <td>Dato: </td>
+                    <td><input type="date" name="dato" onchange ="valider_dato()"/></td>
+                </tr>
+                <tr>
+                    <td>Tidspunkt: </td>
+                    <td><input type="time" name="tidspunkt" onchange ="valider_tidspunkt()"/></td>
+                </tr>
+
+                </table>
+                        <input type="submit" name="registrer" value="registrer"/>
+           
+                <table id="tabell">
+                    <col width=""/>
+                    <col width=""/>
+                    <col width="200"/>
+                    <col width="40"/>
+                    <tr>
+                        <th>Øvelse</th>
+                        <th>Dato</th>
+                        <th>Tidspunkt</th>
+                    </tr>
+
+                    <?php //tabellkode /slettknapper /dbqueries
+                    include 'db_connect.php';
+                    
+                    if(isset($_REQUEST['slett_knp'])){ //slett funksjon
+                        $boks_id = $_REQUEST['valg_id'];
+                        
+                        foreach($boks_id as $valgt){
+                            $db->query("DELETE FROM ovelser where ovelses_id = '$valgt'");
+                        }
+                    }
+                    
+                    if(isset($_REQUEST['oppdater_knp'])){ //oppdater funksjon                        
+                        $navn = $_REQUEST['onavn'];
+                        $datoen = $_REQUEST['dato'];
+                        $tpunkt = $_REQUEST['tidspunkt'];
+
+                        $boks_id = $_REQUEST['valg_id'];
+                        $print = "";
+                        foreach($boks_id as $valgt){
+                            $print .= $valgt;
+                            echo $valgt;
+                            $sql="UPDATE `ovelser` SET `navn`='$navn',`dato`='$datoen',`tid`='$tpunkt' WHERE ovelses_id = '$valgt'";
+                            $resultat = $db->query($sql);
+
+                            if(!$resultat)
+                            {
+                                echo "Error";
+                            }
+                            else
+                            {
+                                $antallRader = $db->affected_rows;
+                                if($antallRader <= 0)
+                                {
+                                    echo "kunne ikke sette inn dataene i databasen!";
+                                }
+                                else 
+                                {
+                                    echo "oppdatert";
+                                }
+                            }
+                        }
+                    }
+                    
+                    $result = $db->query("select * from ovelser");
+                    while ($row = $result->fetch_assoc()) {
+                              $id = $row['ovelses_id'];
+                              $navn = $row['navn'];
+                              $tidspunkt = $row['tid'];
+                              $dato = $row['dato'];
+
+                                echo "<tr><td>".$navn."</td>"."<td>".$dato."</td>"."<td>".$tidspunkt."</td>"."<td>"
+                                      ."<input type='checkbox' name ='valg_id[]' value='$id' id='slett_select'/></td></tr>";
+
+                    }
+                    ?>
+                </table>
+                <input type='submit' name='slett_knp' value='Slett'/>
+                <input type='submit' name='oppdater_knp' value='Oppdater'/>
+            </form>
+          </div>
             
-            </table>
-                    <input type="submit" name="registrer" value="registrer" />
-         </form>
-      </div>
+            
+        <?php //legge til ny øvelse ol. funksjonalitet
+        include 'db_connect.php';
+           if(isset($_REQUEST['registrer']))
+            {
+                $navn = $_REQUEST['onavn'];
+                $dato = $_REQUEST['dato'];
+                $tpunkt = $_REQUEST['tidspunkt'];
+
+                $sql = "Insert INTO ovelser(navn,dato,tid)Values('$navn','$dato','$tpunkt')";
+                $resultat = $db->query($sql);
+
+                if(!$resultat)
+                {
+                    echo "Error";
+                }
+                else
+                {
+                    $antallRader = $db->affected_rows;
+                    if($antallRader <= 0)
+                    {
+                        echo "kunne ikke sette inn dataene i databasen!";
+                    }
+                    else 
+                    {
+                        echo "oppdatert";
+                    }
+                }
+            }
+            ?>
+        
+    </div>
     </div>
 
     <div class="container">
@@ -98,7 +215,7 @@
       <hr>
 
       <footer>
-        <p>&copy; Company 2017</p>
+        <p>&copy; MMA 2017</p>
       </footer>
     </div>
 

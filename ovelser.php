@@ -1,6 +1,5 @@
 <?php
-
-class Ovelser {
+    class Ovelser {
                 private $ovelse;
                 private $tidspunkt;
                 private $dato;
@@ -18,6 +17,6 @@ class Ovelser {
                 public function set_ovelse ($ovelse) {$this->ovelse=$ovelse;}
                 public function set_tidspunkt ($tidspunkt) {$this->tidspunkt=$tidspunkt;}
                 public function set_dato ($dato) {$this->dato=$dato;}         
-}
+    }
 
 
