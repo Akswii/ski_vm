@@ -109,6 +109,17 @@
                     <?php //tabellkode /slettknapper /dbqueries
                     include 'db_connect.php';
                     $result = $db->query("select * from ovelser");
+                    
+                    if(isset($_REQUEST['slett_knp'])){
+                        $boks_id = $_REQUEST['slett'];
+                        $print = "";
+
+                        foreach($boks_id as $test_id){
+                            $print.=$test_id;
+                            $slett_ovelse=$db->query("DELETE FROM ovelser where ovelses_id = $test_id");
+                            echo $print;
+                        }
+                    }
 
                     while ($row = $result->fetch_assoc()) {
                               $id = $row['ovelses_id'];
@@ -116,31 +127,19 @@
                               $tidspunkt = $row['tid'];
                               $dato = $row['dato'];
 
-                              /*echo "<tr><td>".$navn."</td>"."<td>".$dato."</td>"."<td>".$tidspunkt."</td>"."<td>"
-                                      . "<form action='' method ='post'>"
-                                      . "<input type='image' name ='slett' src='d_button.png' alt='Submit' id='slett_btn'/>"
-                                      . "</form></td></tr>";*/
-
                                 echo "<tr><td>".$navn."</td>"."<td>".$dato."</td>"."<td>".$tidspunkt."</td>"."<td>"
-                                      ."<input type='checkbox' name ='slett[]' id='slett_select'/></td></tr>";
+                                      ."<input type='checkbox' name ='slett[]' value='$id' id='slett_select'/></td></tr>";
 
                     }
                     ?>
                 </table>
-                <input type='submit' name='slett' value='slett'/>
-            </form>
+                <input type='submit' name='slett_knp' value='slett_knp'/>
+                </form>
+            
             
         <?php //legge til ny øvelse ol. funksjonalitet
         include 'db_connect.php';
-        
-            if(isset($_REQUEST['slett'])){
-                        //$result = $db->query("select * from ovelser where ");
-                            echo '<script language="javascript">';
-                            echo 'alert("message successfully sent")';
-                            echo '</script>';
-                    }
-            
-            if(isset($_REQUEST['registrer']))
+           if(isset($_REQUEST['registrer']))
             {
                 $navn = $_REQUEST['onavn'];
                 $dato = $_REQUEST['dato'];
@@ -162,9 +161,7 @@
                     }
                     else 
                     {
-                        echo '<script language="javascript">';
-                        echo 'alert("message successfully sent")';
-                        echo '</script>';
+                        
                     }
                 }
             }
