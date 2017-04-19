@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+    //error_reporting(0);
+?>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -196,11 +199,6 @@
          $epost = $_REQUEST["epost"];
          $test = $_REQUEST["ovelser"];
          $ovelser = "";
-         
-            foreach ($test as $ovelse){
-                echo $ovelse.", ";
-                $ovelser.=$ovelse.", ";
-            }
             
         if(!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
                 echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
@@ -214,8 +212,16 @@
                 echo "Feil i epost, du må ha @ og ha nok tegn i eposten!<br/>";
                 $OK=false; 
         }
+        else if($test=="") {
+            echo "Du må velge minst en øvelse!<br/>";
+        }
         else {
-         
+        
+        foreach ($test as $ovelse){
+                echo $ovelse.", ";
+                $ovelser.=$ovelse.", ";
+        }
+            
         $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
                 $sql .= "Values('$navn','$tlf','$epost','$adresse','$ovelser')";
                 $resultat = mysqli_query($db, $sql);
@@ -225,7 +231,7 @@
                 }
                 
         }
-         }
+        }
 
          ?>
          <!--<form action="" method ="post">
@@ -302,7 +308,7 @@
             
         ?>
              <br>
-            <input type="submit" name="registrer4" value="registrer" />
+            <input type="submit" name="registrer4" value="Vis utøvere" />
     </form>
     
         <h1 class="display-3">Hello, world!</h1>
