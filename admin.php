@@ -218,7 +218,7 @@
             </table>
                         <input type="submit" name="registrer_utover" value="registrer" />
              </form>
-            
+
             <form action="" method ="post">
                 <table border="1">
                     <?php
@@ -252,36 +252,53 @@
                                         }
                                     }
                             }
-                           $resultPrintu = $db->query("select * from ovelser");
+                            ?></table>
+                
+                        <table id="ovelse_tabell">
+                        
+                        <tr>
+                        <?php
+                        include 'db_connect.php';
+                        
+                        $resultPrintu = $db->query("select * from ovelser");
+                        echo "<th><select name='select'>";
                            
-                           echo "<select name='select'>";
-                           
-                           while ($row = $resultPrintu->fetch_assoc()) {
-                                $o_name = $row['navn'];
+                        while ($row = $resultPrintu->fetch_assoc()) {
+                            $o_name = $row['navn'];
 
-                                echo "<option value='".$o_name."'>".$o_name."</option>";
-                       }
-                       echo "</select>";
-                       ?></table>
-                       <?php
-                       if(isset($_REQUEST["skrivut_odeltagere"])) {
+                            echo "<option value='".$o_name."'>".$o_name."</option>";
+                        }
+                        echo "</select></th>";    
+                        echo '<th>Dato</th>';
+                        echo '</tr>';
+                        
+                        $d_valg = $_REQUEST["select"];
+                        $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$d_valg%'");
+                        while ($row = $resultUtskriftu->fetch_assoc()) {
+                            unset($name);
+                            echo "<tr><td>".$name = $row['Navn']."</td></tr>";
+                            echo $name.", ";
+                        }
+                        
+                       /*if(isset($_REQUEST["skrivut_odeltagere"])) {
                             $d_valg = $_REQUEST["select"];
-                            echo "Øvelsen ".$d_valg." har disse utøverene:<br><br>";
-                       
+                            echo "Øvelsen ".$d_valg." har disse utøverene:<br><br>"; //skrive ut hvilken utøvere som har meldt seg på hvilke øvelser
 
+                            
                             $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$d_valg%'");
                             while ($row = $resultUtskriftu->fetch_assoc()) {
                                 unset($name);
                                 $name = $row['Navn'];
                                 echo $name.", ";
                             }
-                        }
+                        }*/
                    ?>
                  <br>
-                <input type="submit" name="skrivut_odeltagere" value="registrer" />
-                </form>
-            </div>
-          </div>
+                <input type="submit" name="skrivut_odeltagere" value="registrer"/>
+                </table>                
+            </form>
+        </div>
+      </div>
         
         <div id="publikum_oversikt"> <!-- Div for utskrift av publikumdeltagelse -->
             
