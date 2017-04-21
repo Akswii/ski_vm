@@ -6,6 +6,7 @@ body {
 #ovelsetabell{
     border: 1px solid black;
     background-color:lightyellow;
+    width:100%;
 }
 
 #inputfelt{
