@@ -17,6 +17,30 @@ error_reporting(0);
 
         <!-- Custom styles for this template -->
         <link href="CSS/index.css" rel="stylesheet">
+        
+        <script>
+            function showUser(str) {
+                if (str == "") {
+                    document.getElementById("txtHint").innerHTML = "";
+                    return;
+                } else {
+                    if (window.XMLHttpRequest) {
+                        // code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        // code for IE6, IE5
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById("txtHint").innerHTML = this.responseText;
+                        }
+                    };
+                    xmlhttp.open("GET", "getuser.php?q=" + str, true);
+                    xmlhttp.send();
+                }
+            }
+        </script>
     </head>
 
     <body>
@@ -136,120 +160,28 @@ error_reporting(0);
                     </form>
                 </div>
                 <br>
-                <!--Utøvere
-                <form action="" method ="post">
-                    <table border="1">
-                        <tr>
-                            <td>Navn: </td>
-                            <td><input type="text" name="navn" onchange ="valider_navn()" /></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Øvelser: </td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                <?php
-                /* $db = mysqli_connect("localhost", "root", "", "ski-vm");
-                  $resultUtover = $db->query("select * from ovelser");
 
-                  while ($row = $resultUtover->fetch_assoc()) {
-                  unset($name);
-                  $name = $row['ovelse'];
-
-                  echo '<tr>';
-                  echo '<td></td>';
-                  echo '<td>'.$name.'</td>';
-                  echo '<td><input type="checkbox" name='.$name.' value='.$name.' /></td>';
-                  echo '</tr>';
-                  } */
-                ?>
-                    </table>
-                                <input type="submit" name="registrer" value="registrer" />
-                     </form>-->
-                <!--her sto regex!-->
-                <!--<form action="" method ="post">
-                    <table border="1">
-                <?php
-                /* $db = mysqli_connect("localhost", "root", "", "ski-vm");
-                  $resultPrintp = $db->query("select * from ovelser");
-
-                  while ($row = $resultPrintp->fetch_assoc()) {
-                  unset($name);
-                  $name = $row['ovelse'];
-
-                  echo "<tr>";
-                  echo "<td>".$name."</td>";
-                  echo "<td><input type='radio' name='ovelser[]' id='ovelser' value=$name /></td>";
-                  echo "</tr>";
-                  }
-                  echo "</table>";
-                  if(isset($_REQUEST['registrer3'])) {
-                  $test = $_REQUEST['ovelser'];
-                  $print = "";
-
-                  echo "<br><br>";
-                  foreach ($test as $ovelse){
-                  $print.=$ovelse;
-                  echo "Øvelsen ".$print." har dette publikumet:<br><br>";
-                  }
-
-                  $resultUtskriftp = $db->query("SELECT navn FROM publikum WHERE ovelser LIKE '%$print%'");
-                  while ($row = $resultUtskriftp->fetch_assoc()) {
-                  unset($name);
-                  $name = $row['navn'];
-                  echo $name.", ";
-                  }
-                  }
-                 */
-                ?>
-                    <br>
-                   <input type="submit" name="registrer3" value="registrer" />
-           </form>-->
                 <div id="tabell2">
-                    <form action="" method ="post">
-                        <table border="1">
                             <?php
-                            $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                            include 'db_connect.php';
+
                             $resultPrintu = $db->query("select * from ovelser");
-                            echo '<th>Øvelser</th> <th></th>';
+                            echo "<select name='select' onchange='showUser(this.value)'>";
+                            echo "<option value='' disabled selected>Velg en øvelse å vise</option>";
 
                             while ($row = $resultPrintu->fetch_assoc()) {
-                                unset($name);
-                                $name = $row['ovelse'];
+                                $o_name = $row['navn'];
 
-                                echo '<tr>';
-                                echo '<td>' . $name . '</td>';
-                                echo '<td><input type="radio" name="ovelser[]" id="ovelser" value=' . $name . ' /></td>';
-                                echo '</tr>';
+                                echo "<option value='$o_name'> $o_name </option>";
                             }
-                            echo '</table>';
-                            if (isset($_REQUEST["registrer4"])) {
-                                $test = $_REQUEST["ovelser"];
-                                $print = "";
+                            echo '</select>';
 
-                                echo "<br><br>";
-                                foreach ($test as $ovelse) {
-                                    $print .= $ovelse;
-                                    echo "Øvelsen " . $print . " har disse utøverene:<br><br>";
-                                }
-
-                                $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$print%'");
-                                while ($row = $resultUtskriftu->fetch_assoc()) {
-                                    unset($name);
-                                    $name = $row['Navn'];
-                                    echo $name . ", ";
-                                }
-                            }
+                            echo '<div id="txtHint"><b></b></div>';
                             ?>
-                            <br>
-                            <input class="btn btn-secondary" type="submit" name="registrer4" value="Vis utøvere" />
                             <br>
 
                             </form>
-
                             </div>
-
                             </div>
 
                             </div>
@@ -322,4 +254,3 @@ error_reporting(0);
                             <script src="JS/ie10-viewport-bug-workaround.js"></script>
                             </body>
                             </html>
-                       
