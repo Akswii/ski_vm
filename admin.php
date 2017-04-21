@@ -16,44 +16,28 @@
         <link href="CSS/admin.css" rel="stylesheet">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
         <script src="JS/validering.js"></script>
-        <style type="text/css">
-            tr.header
-            {
-                font-weight:bold;
-            }
-            tr.alt
-            {
-                background-color: #777777;
-            }
-        </style>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('.striped tr:even').addClass('alt');
-            });
-        </script>
-        
         <script>
-        function showUser(str) {
-            if (str == "") {
-                document.getElementById("txtHint").innerHTML = "";
-                return;
-            } else { 
-                if (window.XMLHttpRequest) {
-                    // code for IE7+, Firefox, Chrome, Opera, Safari
-                    xmlhttp = new XMLHttpRequest();
+            function showUser(str) {
+                if (str == "") {
+                    document.getElementById("txtHint").innerHTML = "";
+                    return;
                 } else {
-                    // code for IE6, IE5
-                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                xmlhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        document.getElementById("txtHint").innerHTML = this.responseText;
+                    if (window.XMLHttpRequest) {
+                        // code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
+                        // code for IE6, IE5
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                     }
-                };
-                xmlhttp.open("GET","getuser.php?q="+str,true);
-                xmlhttp.send();
+                    xmlhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            document.getElementById("txtHint").innerHTML = this.responseText;
+                        }
+                    };
+                    xmlhttp.open("GET", "getuser.php?q=" + str, true);
+                    xmlhttp.send();
+                }
             }
-        }
         </script>
     </head>
 
@@ -97,9 +81,9 @@
             <div class="container">
                 <h1 class="display-3">Admin page</h1>
                 <div id ="inputfelt">
-                    Legg til øvelse
                     <form action="" method ="post">
                         <table border="1">
+                            <th>Legg til øvelse</th>
                             <tr>
                                 <td>Øvelsesnavn: </td>
                                 <td><input type="text" name="onavn" onchange="regNavn(this.value)" /></td>
@@ -136,7 +120,9 @@
 
                             if (isset($_REQUEST['slett_knp'])) { //slette øvelse
                                 $boks_id = $_REQUEST['valg_id'];
-                                if ($ovelse_funksjoner->slett_o($boks_id)) {echo "Valg er slettet!";}
+                                if ($ovelse_funksjoner->slett_o($boks_id)) {
+                                    echo "Valg er slettet!";
+                                }
                             }
 
                             if (isset($_REQUEST['oppdater_knp'])) { //oppdater øvelse
@@ -145,31 +131,32 @@
                                 $tpunkt = $_REQUEST['tidspunkt'];
                                 $boks_id = $_REQUEST['valg_id'];
 
-                                if ($ovelse_funksjoner->oppdater_o($navn, $datoen, $tpunkt, $boks_id)) {echo "Øvelse oppdatert!";}
+                                if ($ovelse_funksjoner->oppdater_o($navn, $datoen, $tpunkt, $boks_id)) {
+                                    echo "Øvelse oppdatert!";
+                                }
                             }
 
                             if (isset($_REQUEST['registrer_ovelse'])) {//registrere ny øvelse
                                 $navn = $_REQUEST['onavn'];
                                 $dato = $_REQUEST['dato'];
                                 $tpunkt = $_REQUEST['tidspunkt'];
-                                
-                                if(!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
-                                        echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
-                                        $OK=false; 
-                                }
-                                else if(!preg_match("/^[\d]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][\d]|3[0-1])$/", $dato)) {
-                                        echo "Feil i dato!<br/>";
-                                        $OK=false; 
-                                }
-                                else if(!preg_match("/^(0[1-9]|1[\d]|2[0-3]):(0[1-9]|[1-5][\d])$/", $tpunkt)) {
-                                        echo "Feil i tidspunkt!$tpunkt<br/>";
-                                        $OK=false; 
-                                }
-                                else {
-                                if($ovelse_funksjoner->registrer_o($navn,$dato,$tpunkt)){echo "Øvelse registrert!";}
+
+                                if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
+                                    echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
+                                    $OK = false;
+                                } else if (!preg_match("/^[\d]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][\d]|3[0-1])$/", $dato)) {
+                                    echo "Feil i dato!<br/>";
+                                    $OK = false;
+                                } else if (!preg_match("/^(0[1-9]|1[\d]|2[0-3]):(0[1-9]|[1-5][\d])$/", $tpunkt)) {
+                                    echo "Feil i tidspunkt!$tpunkt<br/>";
+                                    $OK = false;
+                                } else {
+                                    if ($ovelse_funksjoner->registrer_o($navn, $dato, $tpunkt)) {
+                                        echo "Øvelse registrert!";
+                                    }
                                 }
                             }
-                            
+
                             $ovelse_funksjoner->skrivut_o();
                             ?>
                         </table>
@@ -218,77 +205,53 @@
                                 $navn = $_REQUEST['u_navn'];
                                 $valgt_ovelser = "";
                                 $boks_id = $_REQUEST['valg_id'];
-                                
-                                if(!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
-                                        echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
-                                        $OK=false; 
-                                }
-                                else if($boks_id=="") {
+
+                                if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
+                                    echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
+                                    $OK = false;
+                                } else if ($boks_id == "") {
                                     echo "Du må velge minst en øvelse!<br/>";
-                                }
-                                else {
-                                foreach ($boks_id as $valgt) {
-                                    $valgt_ovelser .= $valgt . ",";
-                                }echo $valgt_ovelser;
-
-                                $sql = "Insert INTO utovere(Navn,ovelser)Values('$navn','$valgt_ovelser')";
-                                $resultat = $db->query($sql);
-
-                                if (!$resultat) {
-                                    echo "Error";
                                 } else {
-                                    $antallRader = $db->affected_rows;
-                                    if ($antallRader <= 0) {
-                                        echo "kunne ikke sette inn dataene i databasen!";
+                                    foreach ($boks_id as $valgt) {
+                                        $valgt_ovelser .= $valgt . ",";
+                                    }echo $valgt_ovelser;
+
+                                    $sql = "Insert INTO utovere(Navn,ovelser)Values('$navn','$valgt_ovelser')";
+                                    $resultat = $db->query($sql);
+
+                                    if (!$resultat) {
+                                        echo "Error";
                                     } else {
-                                        echo "oppdatert";
+                                        $antallRader = $db->affected_rows;
+                                        if ($antallRader <= 0) {
+                                            echo "kunne ikke sette inn dataene i databasen!";
+                                        } else {
+                                            echo "oppdatert";
+                                        }
                                     }
-                                }
                                 }
                             }
                             ?></table>
 
-                        
 
-                            <tr>
-                                <?php                                
-                                include 'db_connect.php';
-                                
-                                $resultPrintu = $db->query("select * from ovelser");
-                                echo "<select name='select' onchange='showUser(this.value)'>";
-                                echo "<option value='' disabled selected>Velg en øvelse å vise</option>";
+                        <tr>
+                            <?php
+                            include 'db_connect.php';
 
-                                while ($row = $resultPrintu->fetch_assoc()) {
-                                    $o_name = $row['navn'];
+                            $resultPrintu = $db->query("select * from ovelser");
+                            echo "<select name='select' onchange='showUser(this.value)'>";
+                            echo "<option value='' disabled selected>Velg en øvelse å vise</option>";
 
-                                    echo "<option value='$o_name'> $o_name </option>";
-                                }
-                                echo '</select>';
-                                
-                                echo '<div id="txtHint"><b></b></div>';
+                            while ($row = $resultPrintu->fetch_assoc()) {
+                                $o_name = $row['navn'];
 
-                                /*$d_valg = $_REQUEST["select"];
-                                $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$d_valg%'");
-                                while ($row = $resultUtskriftu->fetch_assoc()) {
-                                    unset($name);
-                                    echo "<tr><td>" . $name = $row['Navn'] . "</td></tr>";
-                                    echo $name . ", ";
-                                }
+                                echo "<option value='$o_name'> $o_name </option>";
+                            }
+                            echo '</select>';
 
-                                /*if (isset($_REQUEST["skrivut_odeltagere"])) {
-                                    $d_valg = $_REQUEST["select"];
-                                    echo "Øvelsen " . $d_valg . " har disse utøverene:<br><br>"; //skrive ut hvilken utøvere som har meldt seg på hvilke øvelser
-
-
-                                    $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$d_valg%'");
-                                    while ($row = $resultUtskriftu->fetch_assoc()) {
-                                        unset($name);
-                                        $name = $row['Navn'];
-                                        echo $name . ", ";
-                                    }
-                                }*/
-                                ?>
-                            <br>                
+                            echo '<div id="txtHint"><b></b></div>';
+                            ?>
+                        <br>                
                     </form>
                 </div>
             </div>
@@ -300,18 +263,6 @@
 
         <div class="container">
             <!-- Example row of columns -->
-            <div class="row">
-                <div class="col-md-4">
-                    <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-                </div>
-                <div class="col-md-4">
-                    <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-                </div>
-                <div class="col-md-4">
-                    <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-                </div>
-            </div>
-
             <hr>
 
             <footer>
