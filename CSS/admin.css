@@ -24,8 +24,13 @@ body {
 }
 
 #tabell{
-    width: 50%;
+    width: 100%;
     background-color:lightblue;
+}
+
+#ovelse_tabell{
+    width: 100%;
+    background-color:lightgoldenrodyellow;
 }
 
 table td {

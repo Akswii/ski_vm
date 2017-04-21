@@ -82,6 +82,7 @@ error_reporting(0);
                     <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="login" name="sjekk">
                 </form>
             </div>
+<<<<<<< HEAD
         </nav>
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="jumbotron">
@@ -322,3 +323,4 @@ error_reporting(0);
                             <script src="JS/ie10-viewport-bug-workaround.js"></script>
                             </body>
                             </html>
+                       
