@@ -11,38 +11,40 @@ body {
 
 #inputfelt{
     border: 1px solid black;
-    background-color:lightgreen;
+    background-color:white;
 }
 
 #utover_boks{
     margin-top:2rem;
     border: 1px solid black;
-    background-color:lightcoral;
-}
-
-#sidebunn{
-    clear: both;
+    background-color:white;
 }
 
 #tabell{
     width: 100%;
-    background-color:lightblue;
+    background-color:white;
 }
 
 #ovelse_tabell{
     width: 100%;
-    background-color:lightgoldenrodyellow;
+    background-color:white;
 }
 
-table td {
-    border-top: thin solid; 
-    border-bottom: thin solid;
+
+table {
+    border-collapse: collapse;
 }
 
-table td:first-child {
-     border-left: thin solid;
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
 }
-
-table td:last-child {
-     border-right: thin solid;
+th {
+    background-color: #4CAF50;
+    color: white;
 }
+tr:nth-child(even) {background-color: #f2f2f2}
