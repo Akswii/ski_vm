@@ -132,7 +132,7 @@
                             include 'db_connect.php';
                             include 'php_funksjoner.php';
 
-                            $ovelse_funksjoner = new Ovelse_what($db);
+                            $ovelse_funksjoner = new Ovelse($db);
 
                             if (isset($_REQUEST['slett_knp'])) { //slette øvelse
                                 $boks_id = $_REQUEST['valg_id'];
@@ -248,25 +248,26 @@
                             }
                             ?></table>
 
-                        <table id="ovelse_tabell">
+                        
 
                             <tr>
-                                <?php
-                                include 'db_connect.php';                                
+                                <?php                                
+                                include 'db_connect.php';
+                                
                                 $resultPrintu = $db->query("select * from ovelser");
-                                echo "<th><select name='select' onchange='showUser(this.value)'>";
+                                echo "<select name='select' onchange='showUser(this.value)'>";
                                 echo "<option value='' disabled selected>Velg en øvelse å vise</option>";
 
                                 while ($row = $resultPrintu->fetch_assoc()) {
                                     $o_name = $row['navn'];
 
-                                    echo "<option value='" . $o_name . "'>" . $o_name . "</option>";
+                                    echo "<option value='$o_name'> $o_name </option>";
                                 }
-                                echo '</select name="ovelses_valg"></th>';
-                                echo '<th>Dato</th>';
-                                echo '</tr>';
+                                echo '</select>';
+                                
+                                echo '<div id="txtHint"><b></b></div>';
 
-                                $d_valg = $_REQUEST["select"];
+                                /*$d_valg = $_REQUEST["select"];
                                 $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$d_valg%'");
                                 while ($row = $resultUtskriftu->fetch_assoc()) {
                                     unset($name);
@@ -287,9 +288,7 @@
                                     }
                                 }*/
                                 ?>
-                            <br>
-                            <input type="submit" name="skrivut_odeltagere" value="registrer"/>
-                        </table>                
+                            <br>                
                     </form>
                 </div>
             </div>
