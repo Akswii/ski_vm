@@ -15,6 +15,7 @@
         <!-- Custom styles for this template -->
         <link href="CSS/admin.css" rel="stylesheet">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+        <script src="JS/validering.js"></script>
         <style type="text/css">
             tr.header
             {
@@ -101,7 +102,7 @@
                         <table border="1">
                             <tr>
                                 <td>Øvelsesnavn: </td>
-                                <td><input type="text" name="onavn" onchange ="valider_onavn()" /></td>
+                                <td><input type="text" name="onavn" onchange="regNavn(this.value)" /></td>
                             </tr>
                             <tr>
                                 <td>Dato: </td>
@@ -152,7 +153,21 @@
                                 $dato = $_REQUEST['dato'];
                                 $tpunkt = $_REQUEST['tidspunkt'];
                                 
+                                if(!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
+                                        echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
+                                        $OK=false; 
+                                }
+                                else if(!preg_match("/^[\d]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][\d]|3[0-1])$/", $dato)) {
+                                        echo "Feil i dato!<br/>";
+                                        $OK=false; 
+                                }
+                                else if(!preg_match("/^(0[1-9]|1[\d]|2[0-3]):(0[1-9]|[1-5][\d])$/", $tpunkt)) {
+                                        echo "Feil i tidspunkt!$tpunkt<br/>";
+                                        $OK=false; 
+                                }
+                                else {
                                 if($ovelse_funksjoner->registrer_o($navn,$dato,$tpunkt)){echo "Øvelse registrert!";}
+                                }
                             }
                             
                             $ovelse_funksjoner->skrivut_o();
@@ -202,8 +217,16 @@
                             if (isset($_REQUEST['registrer_utover'])) {//registrere ny utøver
                                 $navn = $_REQUEST['u_navn'];
                                 $valgt_ovelser = "";
-
                                 $boks_id = $_REQUEST['valg_id'];
+                                
+                                if(!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
+                                        echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
+                                        $OK=false; 
+                                }
+                                else if($boks_id=="") {
+                                    echo "Du må velge minst en øvelse!<br/>";
+                                }
+                                else {
                                 foreach ($boks_id as $valgt) {
                                     $valgt_ovelser .= $valgt . ",";
                                 }echo $valgt_ovelser;
@@ -220,6 +243,7 @@
                                     } else {
                                         echo "oppdatert";
                                     }
+                                }
                                 }
                             }
                             ?></table>

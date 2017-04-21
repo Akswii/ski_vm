@@ -114,7 +114,7 @@
         <table border="1">
             <tr>
                 <td>Navn: </td>
-                <td><input type="text" name="navn" onchange ="valider_navn()" /></td>
+                <td><input type="text" name="navn" onchange ="regNavn()" /></td>
                 <td></td>
             </tr>
             <tr>
@@ -150,7 +150,7 @@
                       echo '<td>'.$name.'</td>';
                       echo '<td><input type="checkbox" name="ovelser[]" id="ovelser" value='.$name.' /></td>';
                       echo '</tr>';
-            }
+                }
                 ?>
             
         </table>
@@ -345,6 +345,7 @@
     <script>window.jQuery || document.write('<script src="JS/jquery.min.js"><\/script>')</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="JS/bootstrap.min.js"></script>
+    <script src="JS/validering.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="JS/ie10-viewport-bug-workaround.js"></script>
   </body>
