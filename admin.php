@@ -84,6 +84,7 @@
                     <form action="" method ="post">
                         <table border="1">
                             <th>Legg til øvelse</th>
+                            <th></th>
                             <tr>
                                 <td>Øvelsesnavn: </td>
                                 <td><input type="text" name="onavn" onchange="regNavn(this.value)" /></td>
@@ -166,9 +167,10 @@
                 </div>
 
                 <div id="utover_boks"> <!-- Div for utøverregistrering og funksjoner for det -->
-                    Utøvere
                     <form action="" method ="post">
                         <table border="1">
+                            <th>Utøvere</th>
+                            <th></th><th></th>
                             <tr>
                                 <td>Navn: </td>
                                 <td><input type="text" name="u_navn" onchange ="valider_navn()" /></td>
