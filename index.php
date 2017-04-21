@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-//error_reporting(0);
+error_reporting(0);
 ?>
 <html lang="en">
     <head>
@@ -29,7 +29,7 @@
 
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav mr-auto">
-                    
+
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="" method="post">
                     <!--Oppdater passord: <br/>
@@ -113,25 +113,26 @@
                                 <td>Øvelser: </td>
                                 <td></td>
                             </tr>
-<?php
-$db = mysqli_connect("localhost", "root", "", "ski-vm");
-$resultPublikum = $db->query("select * from ovelser");
+                            <?php
+                            $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                            $resultPublikum = $db->query("select * from ovelser");
 
-while ($row = $resultPublikum->fetch_assoc()) {
-    unset($name);
-    $name = $row['ovelse'];
+                            while ($row = $resultPublikum->fetch_assoc()) {
+                                unset($name);
+                                $name = $row['ovelse'];
 
-    echo '<tr>';
-    echo '<td></td>';
-    echo '<td>' . $name;
-    echo '<input type="checkbox" name="ovelser[]" id="ovelser" value=' . $name . ' /></td>';
-    echo '</tr>';
-}
-?>
+                                echo '<tr>';
+                                echo '<td></td>';
+                                echo '<td>' . $name;
+                                echo '<input type="checkbox" name="ovelser[]" id="ovelser" value=' . $name . ' /></td>';
+                                echo '</tr>';
+                            }
+                            ?>
 
                         </table>
                         <br>
                         <input class="btn btn-secondary" type="submit" name="registrer" value="Registrer" />
+
                     </form>
                 </div>
                 <br>
@@ -148,64 +149,25 @@ while ($row = $resultPublikum->fetch_assoc()) {
                             <td></td>
                             <td></td>
                         </tr>
-<?php
-/* $db = mysqli_connect("localhost", "root", "", "ski-vm");
-  $resultUtover = $db->query("select * from ovelser");
+                <?php
+                /* $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                  $resultUtover = $db->query("select * from ovelser");
 
-  while ($row = $resultUtover->fetch_assoc()) {
-  unset($name);
-  $name = $row['ovelse'];
+                  while ($row = $resultUtover->fetch_assoc()) {
+                  unset($name);
+                  $name = $row['ovelse'];
 
-  echo '<tr>';
-  echo '<td></td>';
-  echo '<td>'.$name.'</td>';
-  echo '<td><input type="checkbox" name='.$name.' value='.$name.' /></td>';
-  echo '</tr>';
-  } */
-?>
+                  echo '<tr>';
+                  echo '<td></td>';
+                  echo '<td>'.$name.'</td>';
+                  echo '<td><input type="checkbox" name='.$name.' value='.$name.' /></td>';
+                  echo '</tr>';
+                  } */
+                ?>
                     </table>
                                 <input type="submit" name="registrer" value="registrer" />
                      </form>-->
-                <?php
-                $db = mysqli_connect("localhost", "root", "", "ski-vm");
-                if (isset($_REQUEST["registrer"])) {
-
-
-                    $navn = $_REQUEST["navn"];
-                    $tlf = $_REQUEST["tlf"];
-                    $adresse = $_REQUEST["adresse"];
-                    $epost = $_REQUEST["epost"];
-                    $test = $_REQUEST["ovelser"];
-                    $ovelser = "";
-
-                    if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
-                        echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
-                        $OK = false;
-                    } else if (!preg_match("/^[0-9]{8}$/", $tlf)) {
-                        echo "Feil i nummeret, du må ha 8 tegn!<br/>";
-                        $OK = false;
-                    } else if (!preg_match("/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/", $epost)) {
-                        echo "Feil i epost, du må ha @ og ha nok tegn i eposten!<br/>";
-                        $OK = false;
-                    } else if ($test == "") {
-                        echo "Du må velge minst en øvelse!<br/>";
-                    } else {
-
-                        foreach ($test as $ovelse) {
-                            echo $ovelse . ", ";
-                            $ovelser .= $ovelse . ", ";
-                        }
-
-                        $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
-                        $sql .= "Values('$navn','$tlf','$epost','$adresse','$ovelser')";
-                        $resultat = mysqli_query($db, $sql);
-
-                        if (!$resultat) {
-                            echo "Error";
-                        }
-                    }
-                }
-                ?>
+                <!--her sto regex!-->
                 <!--<form action="" method ="post">
                     <table border="1">
                 <?php
@@ -247,69 +209,116 @@ while ($row = $resultPublikum->fetch_assoc()) {
                 <div id="tabell2">
                     <form action="" method ="post">
                         <table border="1">
-                <?php
-                $db = mysqli_connect("localhost", "root", "", "ski-vm");
-                $resultPrintu = $db->query("select * from ovelser");
-                echo '<th>Øvelser</th> <th></th>';
+                            <?php
+                            $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                            $resultPrintu = $db->query("select * from ovelser");
+                            echo '<th>Øvelser</th> <th></th>';
 
-                while ($row = $resultPrintu->fetch_assoc()) {
-                    unset($name);
-                    $name = $row['ovelse'];
+                            while ($row = $resultPrintu->fetch_assoc()) {
+                                unset($name);
+                                $name = $row['ovelse'];
 
-                    echo '<tr>';
-                    echo '<td>' . $name . '</td>';
-                    echo '<td><input type="radio" name="ovelser[]" id="ovelser" value=' . $name . ' /></td>';
-                    echo '</tr>';
-                }
-                echo '</table>';
-                if (isset($_REQUEST["registrer4"])) {
-                    $test = $_REQUEST["ovelser"];
-                    $print = "";
+                                echo '<tr>';
+                                echo '<td>' . $name . '</td>';
+                                echo '<td><input type="radio" name="ovelser[]" id="ovelser" value=' . $name . ' /></td>';
+                                echo '</tr>';
+                            }
+                            echo '</table>';
+                            if (isset($_REQUEST["registrer4"])) {
+                                $test = $_REQUEST["ovelser"];
+                                $print = "";
 
-                    echo "<br><br>";
-                    foreach ($test as $ovelse) {
-                        $print .= $ovelse;
-                        echo "Øvelsen " . $print . " har disse utøverene:<br><br>";
-                    }
+                                echo "<br><br>";
+                                foreach ($test as $ovelse) {
+                                    $print .= $ovelse;
+                                    echo "Øvelsen " . $print . " har disse utøverene:<br><br>";
+                                }
 
-                    $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$print%'");
-                    while ($row = $resultUtskriftu->fetch_assoc()) {
-                        unset($name);
-                        $name = $row['Navn'];
-                        echo $name . ", ";
-                    }
-                }
-                ?>
+                                $resultUtskriftu = $db->query("SELECT Navn FROM utovere WHERE ovelser LIKE '%$print%'");
+                                while ($row = $resultUtskriftu->fetch_assoc()) {
+                                    unset($name);
+                                    $name = $row['Navn'];
+                                    echo $name . ", ";
+                                }
+                            }
+                            ?>
                             <br>
                             <input class="btn btn-secondary" type="submit" name="registrer4" value="Vis utøvere" />
-                    </form>
-                </div>
+                            <br>
 
-            </div>
-        </div>
+                            </form>
 
-        <div class="container">
-            <!-- Example row of columns -->
-            <div class="row">
-                
-            </div>
+                            </div>
 
-            <hr>
+                            </div>
 
-            <footer>
-                <p>&copy; MMA 2017</p>
-            </footer>
-        </div> <!-- /container -->
+                            </div>
+                            <div id="feilmelding">
+                                <?php
+                                $db = mysqli_connect("localhost", "root", "", "ski-vm");
+                                if (isset($_REQUEST["registrer"])) {
 
 
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="JS/jquery.min.js"><\/script>')</script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-        <script src="JS/bootstrap.min.js"></script>
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="JS/ie10-viewport-bug-workaround.js"></script>
-    </body>
-</html>
+                                    $navn = $_REQUEST["navn"];
+                                    $tlf = $_REQUEST["tlf"];
+                                    $adresse = $_REQUEST["adresse"];
+                                    $epost = $_REQUEST["epost"];
+                                    $test = $_REQUEST["ovelser"];
+                                    $ovelser = "";
+
+                                    if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
+                                        echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
+                                        $OK = false;
+                                    } else if (!preg_match("/^[0-9]{8}$/", $tlf)) {
+                                        echo "Feil i nummeret, du må ha 8 tegn!<br/>";
+                                        $OK = false;
+                                    } else if (!preg_match("/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/", $epost)) {
+                                        echo "Feil i epost, du må ha @ og ha nok tegn i eposten!<br/>";
+                                        $OK = false;
+                                    } else if ($test == "") {
+                                        echo "Du må velge minst en øvelse!<br/>";
+                                    } else {
+
+                                        foreach ($test as $ovelse) {
+                                            echo $ovelse . ", ";
+                                            $ovelser .= $ovelse . ", ";
+                                        }
+
+                                        $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
+                                        $sql .= "Values('$navn','$tlf','$epost','$adresse','$ovelser')";
+                                        $resultat = mysqli_query($db, $sql);
+
+                                        if (!$resultat) {
+                                            echo "Error";
+                                        }
+                                    }
+                                }
+                                ?>
+                            </div>  
+
+
+                            <div class="container">
+                                <!-- Example row of columns -->
+                                <div class="row">
+
+                                </div>
+
+                                <hr>
+
+                                <footer>
+                                    <p>&copy; MMA 2017</p>
+                                </footer>
+                            </div> <!-- /container -->
+
+
+                            <!-- Bootstrap core JavaScript
+                            ================================================== -->
+                            <!-- Placed at the end of the document so the pages load faster -->
+                            <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+                            <script>window.jQuery || document.write('<script src="JS/jquery.min.js"><\/script>')</script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+                            <script src="JS/bootstrap.min.js"></script>
+                            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+                            <script src="JS/ie10-viewport-bug-workaround.js"></script>
+                            </body>
+                            </html>

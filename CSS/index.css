@@ -41,6 +41,10 @@ input[type=checkbox] {
 }
 .jumbotron {
     background-color: white;
-    height: 80vh;
+    height: 75vh;
+}
+#feilmelding {
+    width: 50%;
+    margin-left: 20%;
 }
 
