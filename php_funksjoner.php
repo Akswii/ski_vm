@@ -116,7 +116,5 @@ class Utover {
         }
         echo '</select>';
     }
-
 }
-
 ?>
