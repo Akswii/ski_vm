@@ -17,7 +17,7 @@ error_reporting(0);
 
         <!-- Custom styles for this template -->
         <link href="CSS/index.css" rel="stylesheet">
-        
+
         <script>
             function showUser(str) {
                 if (str == "") {
@@ -41,6 +41,7 @@ error_reporting(0);
                 }
             }
         </script>
+        <script type="text/javascript" src="JS/validering.js"></script>
     </head>
 
     <body>
@@ -113,17 +114,17 @@ error_reporting(0);
 
 
                 <div id="tabell1">
-                    <form action="" method ="post">
+                    <form action="" method ="post" name="registrer">
                         <table border="1">
                             <th>Publikum</th>
                             <th></th>
                             <tr>
                                 <td>Navn: </td>
-                                <td><input type="text" name="navn" onchange ="valider_navn()" /></td>
+                                <td><input type="text" name="navn" onchange ="regNavn()" /><div id="feilNavn">*</div></td>
                             </tr>
                             <tr>
                                 <td>Tlf: </td>
-                                <td><input type="text" name="tlf" onchange ="valider_tlf()"/></td>
+                                <td><input type="text" name="tlf" onchange ="regTel()"/><div id="feilTel">*</div></td>
                             </tr>
                             <tr>
                                 <td>Adresse: </td>
@@ -131,26 +132,43 @@ error_reporting(0);
                             </tr>
                             <tr>
                                 <td>Epost: </td>
-                                <td><input type="text" name="epost" onchange ="valider_epost()"/></td>
+                                <td><input type="text" name="epost" onchange ="regEp()"/><div id="feilEp">*</div></td>
                             </tr>
                             <tr>
                                 <td>Øvelser: </td>
                                 <td></td>
                             </tr>
                             <?php
-                            $db = mysqli_connect("localhost", "root", "", "ski-vm");
-                            $resultPublikum = $db->query("select * from ovelser");
+                            include 'php_funksjoner.php';
+                            $registrer_funksjoner = new Registrer($db);
+                            if (isset($_REQUEST["registrer"])) {
 
-                            while ($row = $resultPublikum->fetch_assoc()) {
-                                unset($name);
-                                $name = $row['ovelse'];
 
-                                echo '<tr>';
-                                echo '<td></td>';
-                                echo '<td>' . $name;
-                                echo '<input type="checkbox" name="ovelser[]" id="ovelser" value=' . $name . ' /></td>';
-                                echo '</tr>';
+                                $navn = $_REQUEST["navn"];
+                                $tlf = $_REQUEST["tlf"];
+                                $adresse = $_REQUEST["adresse"];
+                                $epost = $_REQUEST["epost"];
+                                $test = $_REQUEST["ovelser"];
+                                $ovelser = "";
+
+                                if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
+                                    echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
+                                    $OK = false;
+                                } else if (!preg_match("/^[0-9]{8}$/", $tlf)) {
+                                    echo "Feil i nummeret, du må ha 8 tegn!<br/>";
+                                    $OK = false;
+                                } else if (!preg_match("/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/", $epost)) {
+                                    echo "Feil i epost, du må ha @ og ha nok tegn i eposten!<br/>";
+                                    $OK = false;
+                                } else if ($test == "") {
+                                    echo "Du må velge minst en øvelse!<br/>";
+                                } else {
+                                    if ($registrer_funksjoner->registrer_p($navn, $tlf, $epost, $adresse, $ovelser)) {
+                                        echo 'Publikum registrert';
+                                    }
+                                }
                             }
+                            $registrer_funksjoner->skrivut_p();
                             ?>
 
                         </table>
@@ -162,95 +180,53 @@ error_reporting(0);
                 <br>
 
                 <div id="tabell2">
-                            <?php
-                            include 'db_connect.php';
+                    <?php
+                    include 'db_connect.php';
 
-                            $resultPrintu = $db->query("select * from ovelser");
-                            echo "<select name='select' onchange='showUser(this.value)'>";
-                            echo "<option value='' disabled selected>Velg en øvelse å vise</option>";
+                    $resultPrintu = $db->query("select * from ovelser");
+                    echo "<select name='select' onchange='showUser(this.value)'>";
+                    echo "<option value='' disabled selected>Velg en øvelse å vise</option>";
 
-                            while ($row = $resultPrintu->fetch_assoc()) {
-                                $o_name = $row['navn'];
+                    while ($row = $resultPrintu->fetch_assoc()) {
+                        $o_name = $row['navn'];
 
-                                echo "<option value='$o_name'> $o_name </option>";
-                            }
-                            echo '</select>';
+                        echo "<option value='$o_name'> $o_name </option>";
+                    }
+                    echo '</select>';
 
-                            echo '<div id="txtHint"><b></b></div>';
-                            ?>
-                            <br>
+                    echo '<div id="txtHint"><b></b></div>';
+                    ?>
+                    <br>
 
-                            </form>
-                            </div>
-                            </div>
+                    </form>
+                </div>
+            </div>
 
-                            </div>
-                            <div id="feilmelding">
-                                <?php
-                                $db = mysqli_connect("localhost", "root", "", "ski-vm");
-                                if (isset($_REQUEST["registrer"])) {
-
-
-                                    $navn = $_REQUEST["navn"];
-                                    $tlf = $_REQUEST["tlf"];
-                                    $adresse = $_REQUEST["adresse"];
-                                    $epost = $_REQUEST["epost"];
-                                    $test = $_REQUEST["ovelser"];
-                                    $ovelser = "";
-
-                                    if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
-                                        echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
-                                        $OK = false;
-                                    } else if (!preg_match("/^[0-9]{8}$/", $tlf)) {
-                                        echo "Feil i nummeret, du må ha 8 tegn!<br/>";
-                                        $OK = false;
-                                    } else if (!preg_match("/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/", $epost)) {
-                                        echo "Feil i epost, du må ha @ og ha nok tegn i eposten!<br/>";
-                                        $OK = false;
-                                    } else if ($test == "") {
-                                        echo "Du må velge minst en øvelse!<br/>";
-                                    } else {
-
-                                        foreach ($test as $ovelse) {
-                                            echo $ovelse . ", ";
-                                            $ovelser .= $ovelse . ", ";
-                                        }
-
-                                        $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
-                                        $sql .= "Values('$navn','$tlf','$epost','$adresse','$ovelser')";
-                                        $resultat = mysqli_query($db, $sql);
-
-                                        if (!$resultat) {
-                                            echo "Error";
-                                        }
-                                    }
-                                }
-                                ?>
-                            </div>  
+        </div>
+        <div id="feilmelding">
+            <?php
+            ?>
+        </div>  
+        <div class="container">
+            <!-- Example row of columns -->
+            <div class="row">
+            </div>
+            <hr>
+            <footer>
+                <p>&copy; MMA 2017</p>
+            </footer>
+        </div> <!-- /container -->
 
 
-                            <div class="container">
-                                <!-- Example row of columns -->
-                                <div class="row">
-
-                                </div>
-
-                                <hr>
-
-                                <footer>
-                                    <p>&copy; MMA 2017</p>
-                                </footer>
-                            </div> <!-- /container -->
-
-
-                            <!-- Bootstrap core JavaScript
-                            ================================================== -->
-                            <!-- Placed at the end of the document so the pages load faster -->
-                            <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-                            <script>window.jQuery || document.write('<script src="JS/jquery.min.js"><\/script>')</script>
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-                            <script src="JS/bootstrap.min.js"></script>
-                            <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-                            <script src="JS/ie10-viewport-bug-workaround.js"></script>
-                            </body>
-                            </html>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="JS/jquery.min.js"><\/script>')</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="JS/bootstrap.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="JS/ie10-viewport-bug-workaround.js"></script>
+        
+    </body>
+</html>

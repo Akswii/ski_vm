@@ -71,5 +71,45 @@ class Ovelse {
             . "<input type='checkbox' name ='valg_id[]' value='$id' id='slett_select'/></td></tr>";
         }
     }
+
 }
+
+class Registrer {
+
+    private $db;
+
+    function __construct($db_inn) {
+        $this->db = $db_inn;
+    }
+
+    function skrivut_p() {
+        $resultPublikum = $this->db->query("select * from ovelser");
+
+        while ($row = $resultPublikum->fetch_assoc()) {
+            unset($name);
+            $name = $row['ovelse'];
+
+            echo '<tr>' . '<td></td>' . '<td>' . $name . '<input type="checkbox" name="ovelser[]" id="ovelser" value=' 
+                    . $name . ' /></td>' . '</tr>';
+        }
+    }
+
+    public function registrer_p($inn_navn, $inn_tlf, $inn_epost, $inn_adresse, $inn_ovelser) {
+        foreach ($inn_ovelser as $ovelse) {
+            echo $ovelse . ", ";
+            $inn_ovelser .= $ovelse . ", ";
+        }
+
+        $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
+        $sql .= "Values('$inn_navn','$inn_tlf','$inn_epost','$inn_adresse','$inn_ovelser')";
+        $resultat = $this->db->query($sql);
+
+        if (!$resultat) {
+            echo "Error";
+        }
+        return true;
+    }
+
+}
+
 ?>
