@@ -112,7 +112,7 @@ error_reporting(0);
                 
                 <div id="tabell1">
                     <form action="" method ="post" name="registrer">
-                        <table border="1">
+                        <table border="1" id='table1'>
                             <th>Publikum</th>
                             <th></th>
                             <tr>
@@ -146,8 +146,7 @@ error_reporting(0);
                                 $tlf = $_REQUEST["tlf"];
                                 $adresse = $_REQUEST["adresse"];
                                 $epost = $_REQUEST["epost"];
-                                $test = $_REQUEST["ovelser"];
-                                $ovelser = "";
+                                $ovelse = $_REQUEST["ovelser"];
 
                                 if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
                                     echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
@@ -158,10 +157,10 @@ error_reporting(0);
                                 } else if (!preg_match("/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/", $epost)) {
                                     echo "Feil i epost, du må ha @ og ha nok tegn i eposten!<br/>";
                                     $OK = false;
-                                } else if ($test == "") {
+                                } else if ($ovelse == "") {
                                     echo "Du må velge minst en øvelse!<br/>";
                                 } else {
-                                    if ($registrer_funksjoner->registrer_p($navn, $tlf, $epost, $adresse, $ovelser)) {
+                                    if ($registrer_funksjoner->registrer_p($navn, $tlf, $epost, $adresse, $ovelse)) {
                                         echo 'Publikum registrert';
                                     }
                                 }
@@ -190,10 +189,7 @@ error_reporting(0);
             </div>
 
         </div>
-        <div id="feilmelding">
-            <?php
-            ?>
-        </div>  
+          
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">

@@ -60,21 +60,21 @@
             <div class="container">
                 <h1 class="display-3">Admin page</h1>
                 <div id ="inputfelt">
-                    <form action="" method ="post">
+                    <form action="" method ="post" name='registrer_o'>
                         <table border="1">
                             <th>Legg til øvelse</th>
                             <th></th>
                             <tr>
                                 <td>Øvelsesnavn: </td>
-                                <td><input type="text" name="onavn" onchange="regNavn(this.value)" /></td>
+                                <td><input type="text" name="onavn" onchange="regOvelse()" /><div id="feilOnavn"></div></td>
                             </tr>
                             <tr>
                                 <td>Dato: </td>
-                                <td><input type="date" name="dato" onchange ="valider_dato()"/></td>
+                                <td><input type="date" name="dato" onchange ="regDato()"/><div id="feilDato"></div></td>
                             </tr>
                             <tr>
                                 <td>Tidspunkt: </td>
-                                <td><input type="time" name="tidspunkt" pattern="^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$" onchange ="valider_tidspunkt()"/></td>
+                                <td><input type="time" name="tidspunkt" onchange ="regTidspunkt()"/><div id="feilTid"></div></td>
                             </tr>
 
                         </table>
@@ -151,13 +151,13 @@
                 </div>
 
                 <div id="utover_boks"> <!-- Div for utøverregistrering og funksjoner for det -->
-                    <form action="" method ="post">
+                    <form action="" method ="post" name='registrer'>
                         <table border="1">
                             <th>Utøvere</th>
                             <th></th><th></th>
                             <tr>
                                 <td>Navn: </td>
-                                <td><input type="text" name="u_navn" onchange ="valider_navn()" /></td>
+                                <td><input type="text" name="u_navn" onchange ="regUnavn()" /><div id="feilUnavn"></div></td>
                                 <td></td>
                             </tr>
                             <tr>

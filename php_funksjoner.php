@@ -96,13 +96,15 @@ class Registrer {
     }
 
     public function registrer_p($inn_navn, $inn_tlf, $inn_epost, $inn_adresse, $inn_ovelser) {
+        $ovelse_p = "";
+        
         foreach ($inn_ovelser as $ovelse) {
             echo $ovelse . ", ";
-            $inn_ovelser .= $ovelse . ", ";
+            $ovelse_p .= $ovelse . ", ";
         }
 
         $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
-        $sql .= "Values('$inn_navn','$inn_tlf','$inn_epost','$inn_adresse','$inn_ovelser')";
+        $sql .= "Values('$inn_navn','$inn_tlf','$inn_epost','$inn_adresse','$ovelse_p')";
         $resultat = $this->db->query($sql);
 
         if (!$resultat) {
