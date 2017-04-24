@@ -109,7 +109,7 @@ error_reporting(0);
         <div class="jumbotron">
             <div class="container">
 
-
+                
                 <div id="tabell1">
                     <form action="" method ="post" name="registrer">
                         <table border="1">
@@ -174,10 +174,8 @@ error_reporting(0);
                         <input class="btn btn-secondary" type="submit" name="registrer" value="Registrer" />
 
                     </form>
-                </div>
                 <br>
 
-                <div id="tabell2">
                     <?php
                     include 'db_connect.php';
                     $utover_funksjoner = new Utover($db);
