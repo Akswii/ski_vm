@@ -155,9 +155,4 @@ class Registrer {
         echo '</select>';
     }
 }
-<<<<<<< HEAD
 ?>
-=======
-?>
-
->>>>>>> a170de8c7f50874ba784af59b32f839464f1ef70

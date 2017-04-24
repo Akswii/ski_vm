@@ -64,10 +64,6 @@ error_reporting(0);
                     <input type="submit" name="lagre" value="Oppdater passord"/><br/>-->
                     <?php
                     session_start();
-                    $db = new mysqli("localhost", "root", "", "ski-vm");
-                    if ($db->connect_error) {
-                        die("Kunne ikke knytte til db!");
-                    }
                     /* if(isset($_POST["lagre"]))
                       {
                       $lagreBrukernavn = $_POST["lagreBrukernavn"];
