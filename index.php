@@ -120,11 +120,11 @@ error_reporting(0);
                             <th></th>
                             <tr>
                                 <td>Navn: </td>
-                                <td><input type="text" name="navn" onchange ="regNavn()" /><div id="feilNavn">*</div></td>
+                                <td id="td1"><input type="text" name="navn" onchange ="regNavn()" /><div id="feilNavn"></div></td>
                             </tr>
                             <tr>
                                 <td>Tlf: </td>
-                                <td><input type="text" name="tlf" onchange ="regTel()"/><div id="feilTel">*</div></td>
+                                <td id="td2"><input type="text" name="tlf" onchange ="regTel()"/><div id="feilTel"></div></td>
                             </tr>
                             <tr>
                                 <td>Adresse: </td>
@@ -132,7 +132,7 @@ error_reporting(0);
                             </tr>
                             <tr>
                                 <td>Epost: </td>
-                                <td><input type="text" name="epost" onchange ="regEp()"/><div id="feilEp">*</div></td>
+                                <td id="td3"><input type="text" name="epost" onchange ="regEp()"/><div id="feilEp"></div></td>
                             </tr>
                             <tr>
                                 <td>Øvelser: </td>
@@ -182,17 +182,8 @@ error_reporting(0);
                 <div id="tabell2">
                     <?php
                     include 'db_connect.php';
-
-                    $resultPrintu = $db->query("select * from ovelser");
-                    echo "<select name='select' onchange='showUser(this.value)'>";
-                    echo "<option value='' disabled selected>Velg en øvelse å vise</option>";
-
-                    while ($row = $resultPrintu->fetch_assoc()) {
-                        $o_name = $row['navn'];
-
-                        echo "<option value='$o_name'> $o_name </option>";
-                    }
-                    echo '</select>';
+                    $utover_funksjoner = new Utover($db);
+                    $utover_funksjoner->skriv_utover();
 
                     echo '<div id="txtHint"><b></b></div>';
                     ?>

@@ -74,11 +74,8 @@ class Ovelse {
 
 }
 
-<<<<<<< HEAD
+
 class Registrer {
-=======
-class Utover {
->>>>>>> e1d36ace8cacca1b130904bfa45d2d47f0614092
 
     private $db;
 
@@ -86,7 +83,6 @@ class Utover {
         $this->db = $db_inn;
     }
 
-<<<<<<< HEAD
     function skrivut_p() {
         $resultPublikum = $this->db->query("select * from ovelser");
 
@@ -113,7 +109,17 @@ class Utover {
             echo "Error";
         }
         return true;
-=======
+    }
+}
+
+    class Utover {
+        
+    private $db;
+
+    function __construct($db_inn) {
+        $this->db = $db_inn;
+    }
+    
     function reg_utover($navn, $boks_id) { //registrere ny utøver
         $valgt_ovelser = "";
 
@@ -147,13 +153,8 @@ class Utover {
             echo "<option value='$o_name'> $o_name </option>";
         }
         echo '</select>';
->>>>>>> e1d36ace8cacca1b130904bfa45d2d47f0614092
     }
 
 }
+?>
 
-<<<<<<< HEAD
-?>
-=======
-?>
->>>>>>> e1d36ace8cacca1b130904bfa45d2d47f0614092
