@@ -146,8 +146,8 @@ error_reporting(0);
                                 $tlf = $_REQUEST["tlf"];
                                 $adresse = $_REQUEST["adresse"];
                                 $epost = $_REQUEST["epost"];
-                                $test = $_REQUEST["ovelser"];
-                                $ovelser = "";
+                                $ovelse = $_REQUEST["ovelser"];
+                               
 
                                 if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
                                     echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
@@ -161,7 +161,7 @@ error_reporting(0);
                                 } else if ($test == "") {
                                     echo "Du må velge minst en øvelse!<br/>";
                                 } else {
-                                    if ($registrer_funksjoner->registrer_p($navn, $tlf, $epost, $adresse, $ovelser)) {
+                                    if ($registrer_funksjoner->registrer_p($navn, $tlf, $epost, $adresse, $ovelse)) {
                                         echo 'Publikum registrert';
                                     }
                                 }

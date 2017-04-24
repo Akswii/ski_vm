@@ -82,7 +82,25 @@ class Registrer {
     function __construct($db_inn) {
         $this->db = $db_inn;
     }
-
+     public function skrivut_publikum($inn_ovelse) {
+        $result = $this->db->query("select * FROM publikum WHERE ovelser LIKE '%$inn_ovelse%'"); // Skriv ut publikum til X øvelse
+        $validering = $this->db->affected_rows;
+        
+        if ($validering > 0)
+        {
+            echo 'Publikum som skal på øvelsen: '.$inn_ovelse;
+            while ($row = $result->fetch_assoc()) {
+                $navn = $row['navn'];
+                $tlf = $row['tlf'];
+                $epost = $row['epost'];
+                $adresse = $row['adresse'];
+                echo "<tr><td>" . $navn . "</td>" . "<td>" . $tlf . "</td>" . "<td>" . $epost . "</td>" . "<td>" . $adresse . "</td></tr>";
+            }
+        }
+        else {
+            echo 'Søket ga ingen treff.';
+        }
+    }
     function skrivut_p() {
         $resultPublikum = $this->db->query("select * from ovelser");
 

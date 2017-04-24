@@ -215,14 +215,49 @@
 
                         echo '<div id="txtskrivUt"><b></b></div>';
                         ?>
-                        <br>                
-                    </form>
+                        <br>     
+                        
+                   
                 </div>
+                <div id="publikum_oversikt"> <!-- Div for utskrift av publikumdeltagelse -->
+              </form>
+                    <form name ="visPublikum" action ="" method="post">
+                    <input type="text" name="publikum_valg" id="publikum_tekst" placeholder="Skriv inn øvelse...">
+                    <input class="btn btn-secondary" type="submit" name="vis_publikum" value="Vis Publikum" />
+                         
+                    <table border ="1" id="tabell">
+                            <col width="75"/>
+                            <col width="75"/>
+                            <col width="75"/>
+                            <col width="75"/>
+                            <tr>
+                                <th>Navn</th>
+                                <th>Tlf</th>
+                                <th>Epost</th>
+                                <th>Adresse</th>
+                            </tr>
+                    <?php 
+                        include 'db_connect.php';
+                        $publikum_funksjoner = new Registrer($db);
+                        
+                        if(isset($_REQUEST["vis_publikum"]))
+                        {
+                            $publikum_ovelse = $_REQUEST["publikum_valg"];
+                            if($publikum_ovelse== "") {
+                                echo 'Feltet er tomt';
+                            }
+                            else {
+                                $publikum_funksjoner->skrivut_publikum($publikum_ovelse);
+                            }
+                        }
+                        ?>
+                    </table>
+                        
+                    </form>
+            </div>
             </div>
 
-            <div id="publikum_oversikt"> <!-- Div for utskrift av publikumdeltagelse -->
-
-            </div>
+            
         </div>
 
         <div class="container">

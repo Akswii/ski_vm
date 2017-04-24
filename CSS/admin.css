@@ -46,4 +46,13 @@ th {
     background-color: #4CAF50;
     color: white;
 }
+#publikum_oversikt{
+    margin-top:2rem;
+    border: 1px solid black;
+    background-color:white;
+}
+#publikum_tekst{
+    margin-left:0.5rem;
+    margin-top: 0.5rem;
+}
 tr:nth-child(even) {background-color: #f2f2f2}
