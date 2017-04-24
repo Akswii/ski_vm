@@ -63,6 +63,7 @@ error_reporting(0);
                     Navn : <input type="text" name="lagreNavn"/><br/>
                     <input type="submit" name="lagre" value="Oppdater passord"/><br/>-->
                     <?php
+                    include 'db_connect.php';
                     session_start();
                     /* if(isset($_POST["lagre"]))
                       {
@@ -135,6 +136,7 @@ error_reporting(0);
                                 <td></td>
                             </tr>
                             <?php
+                            include 'db_connect.php';
                             include 'php_funksjoner.php';
                             $registrer_funksjoner = new Registrer($db);
                             if (isset($_REQUEST["registrer"])) {
@@ -166,7 +168,7 @@ error_reporting(0);
                             }
                             $registrer_funksjoner->skrivut_p();
                             ?>
-
+                        
                         </table>
                         <br>
                         <input class="btn btn-secondary" type="submit" name="registrer" value="Registrer" />

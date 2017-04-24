@@ -88,7 +88,7 @@ class Registrer {
 
         while ($row = $resultPublikum->fetch_assoc()) {
             unset($name);
-            $name = $row['ovelse'];
+            $name = $row['navn'];
 
             echo '<tr>' . '<td></td>' . '<td>' . $name . '<input type="checkbox" name="ovelser[]" id="ovelser" value=' 
                     . $name . ' /></td>' . '</tr>';
