@@ -16,37 +16,15 @@
         <link href="CSS/admin.css" rel="stylesheet">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
         <script src="JS/validering.js" type="text/javascript"></script>
-        <script>
-            function showUser(str) {
-                if (str == "") {
-                    document.getElementById("txtskrivUt").innerHTML = "";
-                    return;
-                } else {
-                    if (window.XMLHttpRequest) {
-                        // code for IE7+, Firefox, Chrome, Opera, Safari
-                        xmlhttp = new XMLHttpRequest();
-                    } else {
-                        // code for IE6, IE5
-                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-                    }
-                    xmlhttp.onreadystatechange = function () {
-                        if (this.readyState == 4 && this.status == 200) {
-                            document.getElementById("txtskrivUt").innerHTML = this.responseText;
-                        }
-                    };
-                    xmlhttp.open("GET", "getuser.php?q=" + str, true);
-                    xmlhttp.send();
-                }
-            }
-        </script>
+        <script src="JS/d_valg.js" type="text/javascript"></script>
     </head>
 
     <body>
         <?php
-        /*session_start();
-        if (!$_SESSION["login"]) {
-            Header("location: index.php");
-        }*/
+        /* session_start();
+          if (!$_SESSION["login"]) {
+          Header("location: index.php");
+          } */
         ?>
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,25 +38,26 @@
             <div class="container">
                 <h1 class="display-3">Admin page</h1>
                 <div id ="inputfelt">
-                    <form action="" method ="post">
+                    <form action="" method ="post" name='registrer_o'>
                         <table border="1">
                             <th>Legg til øvelse</th>
                             <th></th>
                             <tr>
                                 <td>Øvelsesnavn: </td>
-                                <td><input type="text" name="onavn" onchange="regNavn(this.value)" /></td>
+                                <td><input type="text" name="onavn" onchange="regOvelse()" /><div id="feilOnavn"></div></td>
                             </tr>
                             <tr>
                                 <td>Dato: </td>
-                                <td><input type="date" name="dato" onchange ="valider_dato()"/></td>
+                                <td><input type="date" name="dato" onchange ="regDato()"/><div id="feilDato"></div></td>
                             </tr>
                             <tr>
                                 <td>Tidspunkt: </td>
-                                <td><input type="time" name="tidspunkt" pattern="^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$" onchange ="valider_tidspunkt()"/></td>
+                                <td><input type="time" name="tidspunkt" onchange ="regTidspunkt()"/><div id="feilTid"></div></td>
                             </tr>
 
                         </table>
                         <input class="btn btn-secondary" type="submit" name="registrer_ovelse" value="registrer"/>
+                        
 
                         <table id="tabell">
                             <col width=""/>
@@ -93,11 +72,10 @@
                             </tr>
 
                             <?php
-                            //tabellkode /slettknapper /dbqueries
-                            include 'db_connect.php';
-                            include 'php_funksjoner.php';
+                            include 'db_connect.php'; //koble opp til databasen
+                            include 'php_funksjoner.php'; //alle php funksjoner
 
-                            $ovelse_funksjoner = new Ovelse($db);
+                            $ovelse_funksjoner = new Ovelse($db); //lage ett objekt av ovelse klassen
 
                             if (isset($_REQUEST['slett_knp'])) { //slette øvelse
                                 $boks_id = $_REQUEST['valg_id'];
@@ -151,13 +129,13 @@
                 </div>
 
                 <div id="utover_boks"> <!-- Div for utøverregistrering og funksjoner for det -->
-                    <form action="" method ="post">
+                    <form action="" method ="post" name='registrer'>
                         <table border="1">
                             <th>Utøvere</th>
                             <th></th><th></th>
                             <tr>
                                 <td>Navn: </td>
-                                <td><input type="text" name="u_navn" onchange ="valider_navn()" /></td>
+                                <td><input type="text" name="u_navn" onchange ="regUnavn()" /><div id="feilUnavn"></div></td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -202,22 +180,36 @@
                                     echo "Du må velge minst en øvelse!<br/>";
                                 } else {
                                     if ($utover_funksjoner->reg_utover($navn, $boks_id)) {
-                                        echo "Utøver registrert";
+                                        echo "<script type='text/javascript'>alert('Utøver registrert!');</script>";
                                     }
                                 }
                             }
                             ?></table>
-
+                        
+                        <table>
                         <?php
                         include 'db_connect.php';
 
                         $utover_funksjoner->skriv_utover();
 
+                        if (isset($_REQUEST['slett_u_knp'])) { //slette utover
+                            $boks_id = $_REQUEST['velg_uid'];
+
+                            foreach ($boks_id as $valgt) {
+                                $db->query("DELETE FROM utovere where utover_id = '$valgt'");
+                            }
+                        }
+
                         echo '<div id="txtskrivUt"><b></b></div>';
                         ?>
+
                         <br>     
                         
                    
+
+                        <br>
+                        </table>
+                    </form>
                 </div>
                 <div id="publikum_oversikt"> <!-- Div for utskrift av publikumdeltagelse -->
               </form>

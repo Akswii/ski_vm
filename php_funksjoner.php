@@ -66,14 +66,13 @@ class Ovelse {
             $navn = $row['navn'];
             $tidspunkt = $row['tid'];
             $dato = $row['dato'];
-
             echo "<tr><td>" . $navn . "</td>" . "<td>" . $dato . "</td>" . "<td>" . $tidspunkt . "</td>" . "<td>"
             . "<input type='checkbox' name ='valg_id[]' value='$id' id='slett_select'/></td></tr>";
         }
+        
     }
 
 }
-
 
 class Registrer {
 
@@ -108,19 +107,21 @@ class Registrer {
             unset($name);
             $name = $row['navn'];
 
-            echo '<tr>' . '<td></td>' . '<td>' . $name . '<input type="checkbox" name="ovelser[]" id="ovelser" value=' 
-                    . $name . ' /></td>' . '</tr>';
+            echo '<tr>' . '<td></td>' . '<td>' . $name . '<input type="checkbox" name="ovelser[]" id="ovelser" value='
+            . $name . ' /></td>' . '</tr>';
         }
     }
 
     public function registrer_p($inn_navn, $inn_tlf, $inn_epost, $inn_adresse, $inn_ovelser) {
+        $ovelse_p = "";
+        
         foreach ($inn_ovelser as $ovelse) {
             echo $ovelse . ", ";
-            $inn_ovelser .= $ovelse . ", ";
+            $ovelse_p .= $ovelse . ", ";
         }
 
         $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
-        $sql .= "Values('$inn_navn','$inn_tlf','$inn_epost','$inn_adresse','$inn_ovelser')";
+        $sql .= "Values('$inn_navn','$inn_tlf','$inn_epost','$inn_adresse','$ovelse_p')";
         $resultat = $this->db->query($sql);
 
         if (!$resultat) {
@@ -128,16 +129,17 @@ class Registrer {
         }
         return true;
     }
+
 }
 
-    class Utover {
-        
+class Utover {
+
     private $db;
 
     function __construct($db_inn) {
         $this->db = $db_inn;
     }
-    
+
     function reg_utover($navn, $boks_id) { //registrere ny utøver
         $valgt_ovelser = "";
 
@@ -172,5 +174,7 @@ class Registrer {
         }
         echo '</select>';
     }
+
 }
+
 ?>
