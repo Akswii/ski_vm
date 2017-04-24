@@ -19,7 +19,7 @@
         <script>
             function showUser(str) {
                 if (str == "") {
-                    document.getElementById("txtHint").innerHTML = "";
+                    document.getElementById("txtskrivUt").innerHTML = "";
                     return;
                 } else {
                     if (window.XMLHttpRequest) {
@@ -31,7 +31,7 @@
                     }
                     xmlhttp.onreadystatechange = function () {
                         if (this.readyState == 4 && this.status == 200) {
-                            document.getElementById("txtHint").innerHTML = this.responseText;
+                            document.getElementById("txtskrivUt").innerHTML = this.responseText;
                         }
                     };
                     xmlhttp.open("GET", "getuser.php?q=" + str, true);
@@ -84,6 +84,7 @@
                     <form action="" method ="post">
                         <table border="1">
                             <th>Legg til øvelse</th>
+                            <th></th>
                             <tr>
                                 <td>Øvelsesnavn: </td>
                                 <td><input type="text" name="onavn" onchange="regNavn(this.value)" /></td>
@@ -94,11 +95,11 @@
                             </tr>
                             <tr>
                                 <td>Tidspunkt: </td>
-                                <td><input type="time" name="tidspunkt" onchange ="valider_tidspunkt()"/></td>
+                                <td><input type="time" name="tidspunkt" pattern="^([0-1]?[0-9]|2[0-4]):([0-5][0-9])(:[0-5][0-9])?$" onchange ="valider_tidspunkt()"/></td>
                             </tr>
 
                         </table>
-                        <input type="submit" name="registrer_ovelse" value="registrer"/>
+                        <input class="btn btn-secondary" type="submit" name="registrer_ovelse" value="registrer"/>
 
                         <table id="tabell">
                             <col width=""/>
@@ -109,6 +110,7 @@
                                 <th>Øvelse</th>
                                 <th>Dato</th>
                                 <th>Tidspunkt</th>
+                                <th></th>
                             </tr>
 
                             <?php
@@ -164,15 +166,16 @@
                             $ovelse_funksjoner->skrivut_o();
                             ?>
                         </table>
-                        <input type='submit' name='slett_knp' value='Slett'/>
-                        <input type='submit' name='oppdater_knp' value='Oppdater'/>
+                        <input class="btn btn-secondary" type='submit' name='slett_knp' value='Slett'/>
+                        <input class="btn btn-secondary" type='submit' name='oppdater_knp' value='Oppdater'/>
                     </form>
                 </div>
 
                 <div id="utover_boks"> <!-- Div for utøverregistrering og funksjoner for det -->
-                    Utøvere
                     <form action="" method ="post">
                         <table border="1">
+                            <th>Utøvere</th>
+                            <th></th><th></th>
                             <tr>
                                 <td>Navn: </td>
                                 <td><input type="text" name="u_navn" onchange ="valider_navn()" /></td>
@@ -198,13 +201,16 @@
                             }
                             ?>
                         </table>
-                        <input type="submit" name="registrer_utover" value="registrer" />
+                        <input class="btn btn-secondary" type="submit" name="registrer_utover" value="registrer" />
                     </form>
 
                     <form action="" method ="post">
                         <table border="1">
                             <?php
                             include 'db_connect.php';
+                            
+                            $utover_funksjoner = new Utover($db);
+                            
                             if (isset($_REQUEST['registrer_utover'])) {//registrere ny utøver
                                 $navn = $_REQUEST['u_navn'];
                                 $valgt_ovelser = "";
@@ -216,44 +222,17 @@
                                 } else if ($boks_id == "") {
                                     echo "Du må velge minst en øvelse!<br/>";
                                 } else {
-                                    foreach ($boks_id as $valgt) {
-                                        $valgt_ovelser .= $valgt . ",";
-                                    }echo $valgt_ovelser;
-
-                                    $sql = "Insert INTO utovere(Navn,ovelser)Values('$navn','$valgt_ovelser')";
-                                    $resultat = $db->query($sql);
-
-                                    if (!$resultat) {
-                                        echo "Error";
-                                    } else {
-                                        $antallRader = $db->affected_rows;
-                                        if ($antallRader <= 0) {
-                                            echo "kunne ikke sette inn dataene i databasen!";
-                                        } else {
-                                            echo "oppdatert";
-                                        }
-                                    }
+                                    if($utover_funksjoner->reg_utover($navn,$boks_id)){echo "Utøver registrert";}
                                 }
                             }
                             ?></table>
 
-
-                        <tr>
                             <?php
                             include 'db_connect.php';
 
-                            $resultPrintu = $db->query("select * from ovelser");
-                            echo "<select name='select' onchange='showUser(this.value)'>";
-                            echo "<option value='' disabled selected>Velg en øvelse å vise</option>";
+                            $utover_funksjoner->skriv_utover();
 
-                            while ($row = $resultPrintu->fetch_assoc()) {
-                                $o_name = $row['navn'];
-
-                                echo "<option value='$o_name'> $o_name </option>";
-                            }
-                            echo '</select>';
-
-                            echo '<div id="txtHint"><b></b></div>';
+                            echo '<div id="txtskrivUt"><b></b></div>';
                             ?>
                         <br>                
                     </form>

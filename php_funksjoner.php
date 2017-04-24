@@ -74,7 +74,11 @@ class Ovelse {
 
 }
 
+<<<<<<< HEAD
 class Registrer {
+=======
+class Utover {
+>>>>>>> e1d36ace8cacca1b130904bfa45d2d47f0614092
 
     private $db;
 
@@ -82,6 +86,7 @@ class Registrer {
         $this->db = $db_inn;
     }
 
+<<<<<<< HEAD
     function skrivut_p() {
         $resultPublikum = $this->db->query("select * from ovelser");
 
@@ -108,8 +113,47 @@ class Registrer {
             echo "Error";
         }
         return true;
+=======
+    function reg_utover($navn, $boks_id) { //registrere ny utøver
+        $valgt_ovelser = "";
+
+        foreach ($boks_id as $valgt) {
+            $valgt_ovelser .= $valgt . ",";
+        }echo $valgt_ovelser;
+
+        $sql = "Insert INTO utovere(Navn,ovelser)Values('$navn','$valgt_ovelser')";
+        $resultat = $this->db->query($sql);
+        if (!$resultat) {
+            echo "Error";
+        } else {
+            $antallRader = $this->db->affected_rows;
+            if ($antallRader <= 0) {
+                echo "kunne ikke sette inn dataene i databasen!";
+            } else {
+                echo "oppdatert";
+            }
+        }
+        return true;
+    }
+
+    function skriv_utover() { //velg hvilke øvelse å vise utøvere fra
+        $resultPrintu = $this->db->query("select * from ovelser");
+        echo "<select name='select' onchange='showUser(this.value)'>";
+        echo "<option value='' disabled selected>Velg en øvelse å vise</option>";
+
+        while ($row = $resultPrintu->fetch_assoc()) {
+            $o_name = $row['navn'];
+
+            echo "<option value='$o_name'> $o_name </option>";
+        }
+        echo '</select>';
+>>>>>>> e1d36ace8cacca1b130904bfa45d2d47f0614092
     }
 
 }
 
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> e1d36ace8cacca1b130904bfa45d2d47f0614092
