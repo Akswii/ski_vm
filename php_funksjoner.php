@@ -74,7 +74,8 @@ class Ovelse {
 
 }
 
-class Utover {
+
+class Registrer {
 
     private $db;
 
@@ -82,6 +83,43 @@ class Utover {
         $this->db = $db_inn;
     }
 
+    function skrivut_p() {
+        $resultPublikum = $this->db->query("select * from ovelser");
+
+        while ($row = $resultPublikum->fetch_assoc()) {
+            unset($name);
+            $name = $row['ovelse'];
+
+            echo '<tr>' . '<td></td>' . '<td>' . $name . '<input type="checkbox" name="ovelser[]" id="ovelser" value=' 
+                    . $name . ' /></td>' . '</tr>';
+        }
+    }
+
+    public function registrer_p($inn_navn, $inn_tlf, $inn_epost, $inn_adresse, $inn_ovelser) {
+        foreach ($inn_ovelser as $ovelse) {
+            echo $ovelse . ", ";
+            $inn_ovelser .= $ovelse . ", ";
+        }
+
+        $sql = "Insert INTO publikum(navn,tlf,epost,adresse,ovelser)";
+        $sql .= "Values('$inn_navn','$inn_tlf','$inn_epost','$inn_adresse','$inn_ovelser')";
+        $resultat = $this->db->query($sql);
+
+        if (!$resultat) {
+            echo "Error";
+        }
+        return true;
+    }
+}
+
+    class Utover {
+        
+    private $db;
+
+    function __construct($db_inn) {
+        $this->db = $db_inn;
+    }
+    
     function reg_utover($navn, $boks_id) { //registrere ny utøver
         $valgt_ovelser = "";
 
@@ -117,4 +155,9 @@ class Utover {
         echo '</select>';
     }
 }
+<<<<<<< HEAD
 ?>
+=======
+?>
+
+>>>>>>> a170de8c7f50874ba784af59b32f839464f1ef70

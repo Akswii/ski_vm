@@ -1,7 +1,7 @@
 function regNavn()
 {
     regEx = /^[a-zÃ¦Ã¸Ã¥A-ZÃ†Ã˜Ã… ]{2,20}$/;
-    ok = regEx.test(document.skjema.navn.value);
+    ok = regEx.test(document.registrer.navn.value);
     if(!ok)
     {
         document.getElementById("feilNavn").innerHTML="Oppgitt navn er ugyldig";
@@ -17,7 +17,7 @@ function regNavn()
 function regTel()
 {
     regEx = /^[0-9]{8}$/;
-    ok = regEx.test(document.skjema.telefonnr.value);
+    ok = regEx.test(document.registrer.tlf.value);
     if(!ok)
     {
         document.getElementById("feilTel").innerHTML="Oppgitt telefonnr er ugyldig";
@@ -33,7 +33,7 @@ function regTel()
 function regEp()
 {
     regEx = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    ok = regEx.test(document.skjema.epost.value);
+    ok = regEx.test(document.registrer.epost.value);
     if(!ok)
     {
         document.getElementById("feilEp").innerHTML="Oppgitt e-post er ugyldig";

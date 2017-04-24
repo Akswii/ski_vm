@@ -42,7 +42,12 @@
     </head>
 
     <body>
-
+        <?php
+        session_start();
+        if(!$_SESSION["login"]) {
+        Header("location: index.php");
+        }
+        ?>
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -116,7 +121,11 @@
                                 $navn = $_REQUEST['onavn'];
                                 $dato = $_REQUEST['dato'];
                                 $tpunkt = $_REQUEST['tidspunkt'];
-
+                                $idag = new DateTime();
+                                $formatidag = $idag->format('Y-m-d');
+                                if ($dato < $formatidag) {
+                                    echo 'Datoen er utgått<br>';
+                                }
                                 if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
                                     echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
                                     $OK = false;
@@ -178,9 +187,9 @@
                         <table border="1">
                             <?php
                             include 'db_connect.php';
-                            
+
                             $utover_funksjoner = new Utover($db);
-                            
+
                             if (isset($_REQUEST['registrer_utover'])) {//registrere ny utøver
                                 $navn = $_REQUEST['u_navn'];
                                 $valgt_ovelser = "";
@@ -192,18 +201,20 @@
                                 } else if ($boks_id == "") {
                                     echo "Du må velge minst en øvelse!<br/>";
                                 } else {
-                                    if($utover_funksjoner->reg_utover($navn,$boks_id)){echo "Utøver registrert";}
+                                    if ($utover_funksjoner->reg_utover($navn, $boks_id)) {
+                                        echo "Utøver registrert";
+                                    }
                                 }
                             }
                             ?></table>
 
-                            <?php
-                            include 'db_connect.php';
+                        <?php
+                        include 'db_connect.php';
 
-                            $utover_funksjoner->skriv_utover();
+                        $utover_funksjoner->skriv_utover();
 
-                            echo '<div id="txtskrivUt"><b></b></div>';
-                            ?>
+                        echo '<div id="txtskrivUt"><b></b></div>';
+                        ?>
                         <br>                
                     </form>
                 </div>
