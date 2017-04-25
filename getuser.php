@@ -6,7 +6,7 @@ $q = $_GET['q'];
 $sql = "SELECT Navn, utover_id FROM utovere WHERE ovelser LIKE '%$q%'";
 $resultat = $db->query($sql);
 
-echo "<table id='ovelsetabell'>";
+echo "<table class='tablesa'>";
 echo "<tr><th>Utøver ID</th>
       <th>Utøver navn</th>
       <th></th></tr>";

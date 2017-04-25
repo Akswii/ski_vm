@@ -3,35 +3,18 @@ body {
   padding-top: 2rem;
 }
 
-#ovelsetabell{
-    border: 1px solid black;
-    width:100%;
-}
-
-#inputfelt{
-    border: 1px solid black;
-    background-color:white;
+.tablesa{
+    width:100%
 }
 
 #utover_boks{
     margin-top:2rem;
-    border: 1px solid black;
-    background-color:white;
-}
-
-#tabell{
-    width: 100%;
-    background-color:white;
-}
-
-#ovelse_tabell{
-    width: 100%;
-    background-color:white;
 }
 
 
 table {
     border-collapse: collapse;
+    background-color:lightblue;
 }
 
 th, td {
@@ -48,8 +31,6 @@ th {
 }
 #publikum_oversikt{
     margin-top:2rem;
-    border: 1px solid black;
-    background-color:white;
 }
 #publikum_tekst{
     margin-left:0.5rem;

@@ -36,7 +36,7 @@
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="jumbotron">
             <div class="container">
-                <h1 class="display-3">Admin page</h1>
+                <h2>Administrative alternativer</h2>
                 <div id ="inputfelt">
                     <form action="" method ="post" name='registrer_o'>
                         <table border="1">
@@ -56,11 +56,11 @@
                             </tr>
 
                         </table>
-                        <input class="btn btn-secondary" type="submit" name="registrer_ovelse" value="registrer"/>
+                        <input class="btn btn-secondary" type="submit" name="registrer_ovelse" value="Registrer øvelse"/>
                         
                         <br><br><br><br>
 
-                        <table id="tabell">
+                        <table class="tablesa">
                             <col width=""/>
                             <col width=""/>
                             <col width="200"/>
@@ -124,14 +124,14 @@
                             $ovelse_funksjoner->skrivut_o();
                             ?>
                         </table>
-                        <input class="btn btn-secondary" type='submit' name='slett_knp' value='Slett'/>
-                        <input class="btn btn-secondary" type='submit' name='oppdater_knp' value='Oppdater'/>
+                        <input class="btn btn-secondary" type='submit' name='slett_knp' value='Slett øvelse'/>
+                        <input class="btn btn-secondary" type='submit' name='oppdater_knp' value='Oppdater øvelse'/>
                     </form>
                 </div>
 
                 <div id="utover_boks"> <!-- Div for utøverregistrering og funksjoner for det -->
                     <form action="" method ="post" name='registrer'>
-                        <table border="1">
+                        <table>
                             <th>Utøvere</th>
                             <th></th><th></th>
                             <tr>
@@ -159,7 +159,7 @@
                             }
                             ?>
                         </table>
-                        <input class="btn btn-secondary" type="submit" name="registrer_utover" value="registrer" />
+                        <input class="btn btn-secondary" type="submit" name="registrer_utover" value="Registrer utøver" />
                     </form>
 
                     <br><br><br>
@@ -212,7 +212,7 @@
                     <input type="text" name="publikum_valg" id="publikum_tekst" placeholder="Skriv inn øvelse...">
                     <input class="btn btn-secondary" type="submit" name="vis_publikum" value="Vis Publikum" />
                          
-                    <table border ="1" id="tabell">
+                    <table class="tablesa">
                             <col width="75"/>
                             <col width="75"/>
                             <col width="75"/>
