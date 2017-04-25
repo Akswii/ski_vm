@@ -18,6 +18,6 @@ while ($row = $resultat->fetch_assoc()) {
     echo "<td><input type='checkbox' name ='velg_uid[]' value='$id' id='slett_select'/></td></tr>";
 }
 echo "</table>";
-echo '<input class="btn btn-secondary" type="submit" name="slett_u_knp" value="slett_alt"/>';
+echo '<input class="btn btn-secondary" type="submit" name="slett_u_knp" value="Slett valg"/>';
 ?>
 

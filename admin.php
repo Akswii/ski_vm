@@ -58,6 +58,7 @@
                         </table>
                         <input class="btn btn-secondary" type="submit" name="registrer_ovelse" value="registrer"/>
                         
+                        <br><br><br><br>
 
                         <table id="tabell">
                             <col width=""/>
@@ -161,6 +162,8 @@
                         <input class="btn btn-secondary" type="submit" name="registrer_utover" value="registrer" />
                     </form>
 
+                    <br><br><br>
+                    
                     <form action="" method ="post">
                         <table border="1">
                             <?php
@@ -186,7 +189,6 @@
                             }
                             ?></table>
                         
-                        <table>
                         <?php
                         include 'db_connect.php';
 
@@ -202,13 +204,6 @@
 
                         echo '<div id="txtskrivUt"><b></b></div>';
                         ?>
-
-                        <br>     
-                        
-                   
-
-                        <br>
-                        </table>
                     </form>
                 </div>
                 <div id="publikum_oversikt"> <!-- Div for utskrift av publikumdeltagelse -->
