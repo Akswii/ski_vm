@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+error_reporting(0);
+?>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -56,7 +59,7 @@
                             <th >Legg til øvelse</th>
                             <th></th>
                             <tr>
-                                <td rowspan="4">Øvelsesnavn: </td>
+                                <td>Øvelsesnavn: </td>
                                 <td><input type="text" name="onavn" onchange="regOvelse()" /><div id="feilOnavn"></div></td>
                             </tr>
                             <tr>
@@ -193,7 +196,7 @@
                                     echo "Du må velge minst en øvelse!<br/>";
                                 } else {
                                     if ($utover_funksjoner->reg_utover($navn, $boks_id)) {
-                                        echo "<script type='text/javascript'>alert('Utøver registrert!');</script>";
+                                        echo "Utøver registrert!";
                                     }
                                 }
                             }

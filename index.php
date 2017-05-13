@@ -36,7 +36,7 @@ error_reporting(0);
                             document.getElementById("txtHint").innerHTML = this.responseText;
                         }
                     };
-                    xmlhttp.open("GET", "getuser.php?q=" + str, true);
+                    xmlhttp.open("GET", "ovelseUtover.php?q=" + str, true);
                     xmlhttp.send();
                 }
             }
@@ -56,6 +56,10 @@ error_reporting(0);
                 <ul class="navbar-nav mr-auto">
                     <?php
                     session_start();
+                    if (isset($_POST["logout"])) {
+                            $_SESSION["login"] = false;
+                            //Header("location: index.php");
+                        }
                     if ($_SESSION["login"]) {
                         ?>
                         <li class="nav-item">
@@ -63,10 +67,6 @@ error_reporting(0);
                         </li>
                         <?php
                     }
-                    if (isset($_POST["logout"])) {
-                            $_SESSION["login"] = false;
-                            //Header("location: index.php");
-                        }
                     ?>
 
                 </ul>
@@ -74,17 +74,15 @@ error_reporting(0);
                     <!--Oppdater passord: <br/>
                     Brukernavn : <input type="text" name="lagreBrukernavn"/><br/>
                     Passord : <input type="password" name="lagrePassord"/><br/>
-                    Navn : <input type="text" name="lagreNavn"/><br/>
                     <input type="submit" name="lagre" value="Oppdater passord"/><br/>-->
                     <?php
                     include 'db_connect.php';
-                    /* if(isset($_POST["lagre"]))
+                    /*if(isset($_POST["lagre"]))
                       {
                       $lagreBrukernavn = $_POST["lagreBrukernavn"];
                       $lagrePassord = $_POST["lagrePassord"];
-                      $lagreNavn = $_REQUEST["lagreNavn"];
 
-                      $sql = "Update innlogging Set passord = Password('$lagrePassord'), navn = '$lagreNavn' where brukernavn='$lagreBrukernavn'";
+                      $sql = "Update innlogging Set passord = Password('$lagrePassord') where brukernavn='$lagreBrukernavn'";
                       $res = $db->query($sql);
                       if($db->affected_rows>0)
                       {
@@ -207,15 +205,11 @@ error_reporting(0);
                     echo '<div id="txtHint"><b></b></div>';
                     ?>
                     <?php
-                    echo "hei";
-                    trigger_error("Fatal error", E_ERROR);
-
                     $error = error_get_last();
                     if ($error['type'] === E_ERROR) {
-                        echo 'hei';
                         $message = $error["message"] . "\n";
                         error_log($message, 3, "Logg.txt");
-                        header("location: http://www.vg.no");
+                        header("location: error.php");
                         ob_flush();
                     }
                     ?>

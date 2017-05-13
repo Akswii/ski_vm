@@ -83,7 +83,7 @@ class Registrer {
         $validering = $this->db->affected_rows;
 
         if ($validering > 0) {
-            echo 'Publikum som skal på øvelsen: ' . $inn_ovelse;
+            echo 'Publikum som skal på øvelse som inneholder: ' . $inn_ovelse;
             while ($row = $result->fetch_assoc()) {
                 $navn = $row['navn'];
                 $tlf = $row['tlf'];
@@ -112,7 +112,6 @@ class Registrer {
         $ovelse_p = "";
 
         foreach ($inn_ovelser as $ovelse) {
-            echo $ovelse . ", ";
             $ovelse_p .= $ovelse . ", ";
         }
 
@@ -141,7 +140,7 @@ class Utover {
 
         foreach ($boks_id as $valgt) {
             $valgt_ovelser .= $valgt . ",";
-        }echo $valgt_ovelser;
+        }
 
         $sql = "Insert INTO utovere(Navn,ovelser)Values('$navn','$valgt_ovelser')";
         $resultat = $this->db->query($sql);
@@ -151,8 +150,6 @@ class Utover {
             $antallRader = $this->db->affected_rows;
             if ($antallRader <= 0) {
                 echo "kunne ikke sette inn dataene i databasen!";
-            } else {
-                echo "oppdatert";
             }
         }
         return true;
