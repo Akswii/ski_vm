@@ -1,6 +1,6 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
 body {
-  padding-top: 2rem;
+    padding-top: 2rem;
 }
 
 .tablesa{
@@ -9,6 +9,16 @@ body {
 
 #utover_boks{
     margin-top:2rem;
+}
+
+#delete_btn{
+    width:1rem;
+    height:1rem;
+}
+
+#update_btn{
+    width:1rem;
+    height:1rem;
 }
 
 

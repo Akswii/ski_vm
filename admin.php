@@ -65,10 +65,12 @@
                             <col width=""/>
                             <col width="200"/>
                             <col width="40"/>
+                            <col width="40"/>
                             <tr>
                                 <th>Øvelse</th>
                                 <th>Dato</th>
                                 <th>Tidspunkt</th>
+                                <th></th>
                                 <th></th>
                             </tr>
 
@@ -78,20 +80,20 @@
 
                             $ovelse_funksjoner = new Ovelse($db); //lage et objekt av ovelse klassen
 
-                            if (isset($_REQUEST['slett_knp'])) { //slette øvelse
-                                $boks_id = $_REQUEST['valg_id'];
-                                if ($ovelse_funksjoner->slett_o($boks_id)) {
+                            if (isset($_REQUEST['slett_knapp'])) { //slette øvelse
+                                $slett_id = $_REQUEST['slett_knapp'];
+                                if ($ovelse_funksjoner->slett_o($slett_id)) {
                                     echo "Valg er slettet!";
                                 }
                             }
 
-                            if (isset($_REQUEST['oppdater_knp'])) { //oppdater øvelse
-                                $navn = $_REQUEST['onavn'];
-                                $datoen = $_REQUEST['dato'];
-                                $tpunkt = $_REQUEST['tidspunkt'];
-                                $boks_id = $_REQUEST['valg_id'];
+                            if (isset($_REQUEST['oppdater_knapp'])) { //oppdater øvelse
+                                $navn = $_REQUEST['oppdater_navn'];
+                                $datoen = $_REQUEST['oppdater_dato'];
+                                $tpunkt = $_REQUEST['oppdater_tid'];
+                                $oppdater_id = $_REQUEST['oppdater_knapp'];
 
-                                if ($ovelse_funksjoner->oppdater_o($navn, $datoen, $tpunkt, $boks_id)) {
+                                if ($ovelse_funksjoner->oppdater_o($navn, $datoen, $tpunkt, $oppdater_id)) {
                                     echo "Øvelse oppdatert!";
                                 }
                             }
