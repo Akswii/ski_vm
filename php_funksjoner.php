@@ -89,7 +89,8 @@ class Registrer {
                 $tlf = $row['tlf'];
                 $epost = $row['epost'];
                 $adresse = $row['adresse'];
-                echo "<tr><td>" . $navn . "</td>" . "<td>" . $tlf . "</td>" . "<td>" . $epost . "</td>" . "<td>" . $adresse . "</td></tr>";
+                $ovelse = $row['ovelser'];
+                echo "<tr> <td>$navn</td> <td>$tlf</td> <td>$epost</td> <td>$adresse</td> <td>$ovelse</td></tr>";
             }
         } else {
             echo 'Søket ga ingen treff.';
