@@ -21,22 +21,35 @@
 
     <body>
         <?php
-        /* session_start();
-          if (!$_SESSION["login"]) {
-          Header("location: index.php");
-          } */
+        session_start();
+        if (!$_SESSION["login"]) {
+            Header("location: index.php");
+        }
         ?>
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand" href="index.php">Ski VM</a>
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <?php
+                    if ($_SESSION["admin"]) {
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin.php">Admin</a>
+                        </li>
+                        <?php
+                    }
+                    ?>
+                </ul>
+            </div>
         </nav>
 
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="jumbotron">
             <div class="container">
-                <h1 class="display-3">Admin page</h1>
+                <h2>Administrative alternativer</h2>
                 <div id ="inputfelt">
                     <form action="" method ="post" name='registrer_o'>
                         <table border="1">
@@ -56,18 +69,21 @@
                             </tr>
 
                         </table>
-                        <input class="btn btn-secondary" type="submit" name="registrer_ovelse" value="registrer"/>
-                        
+                        <input class="btn btn-secondary" type="submit" name="registrer_ovelse" value="Registrer øvelse"/>
 
-                        <table id="tabell">
+                        <br><br><br><br>
+
+                        <table class="tablesa">
                             <col width=""/>
                             <col width=""/>
                             <col width="200"/>
+                            <col width="40"/>
                             <col width="40"/>
                             <tr>
                                 <th>Øvelse</th>
                                 <th>Dato</th>
                                 <th>Tidspunkt</th>
+                                <th></th>
                                 <th></th>
                             </tr>
 
@@ -75,31 +91,31 @@
                             include 'db_connect.php'; //koble opp til databasen
                             include 'php_funksjoner.php'; //alle php funksjoner
 
-                            $ovelse_funksjoner = new Ovelse($db); //lage ett objekt av ovelse klassen
+                            $ovelse_funksjoner = new Ovelse($db); //lage et objekt av ovelse klassen
 
-                            if (isset($_REQUEST['slett_knp'])) { //slette øvelse
-                                $boks_id = $_REQUEST['valg_id'];
-                                if ($ovelse_funksjoner->slett_o($boks_id)) {
+                            if (isset($_REQUEST['slett_knapp'])) { //slette øvelse
+                                $slett_id = $_REQUEST['slett_knapp'];
+                                if ($ovelse_funksjoner->slett_o($slett_id)) {
                                     echo "Valg er slettet!";
                                 }
                             }
 
-                            if (isset($_REQUEST['oppdater_knp'])) { //oppdater øvelse
-                                $navn = $_REQUEST['onavn'];
-                                $datoen = $_REQUEST['dato'];
-                                $tpunkt = $_REQUEST['tidspunkt'];
-                                $boks_id = $_REQUEST['valg_id'];
+                            if (isset($_REQUEST['oppdater_knapp'])) { //oppdater øvelse
+                                $navn = $_REQUEST['oppdater_navn'];
+                                $datoen = $_REQUEST['oppdater_dato'];
+                                $tpunkt = $_REQUEST['oppdater_tid'];
+                                $oppdater_id = $_REQUEST['oppdater_knapp'];
 
-                                if ($ovelse_funksjoner->oppdater_o($navn, $datoen, $tpunkt, $boks_id)) {
+                                if ($ovelse_funksjoner->oppdater_o($navn, $datoen, $tpunkt, $oppdater_id)) {
                                     echo "Øvelse oppdatert!";
                                 }
                             }
 
+                            $idag = new DateTime();
                             if (isset($_REQUEST['registrer_ovelse'])) {//registrere ny øvelse
                                 $navn = $_REQUEST['onavn'];
                                 $dato = $_REQUEST['dato'];
                                 $tpunkt = $_REQUEST['tidspunkt'];
-                                $idag = new DateTime();
                                 $formatidag = $idag->format('Y-m-d');
                                 if ($dato < $formatidag) {
                                     echo 'Datoen er utgått<br>';
@@ -123,14 +139,12 @@
                             $ovelse_funksjoner->skrivut_o();
                             ?>
                         </table>
-                        <input class="btn btn-secondary" type='submit' name='slett_knp' value='Slett'/>
-                        <input class="btn btn-secondary" type='submit' name='oppdater_knp' value='Oppdater'/>
                     </form>
                 </div>
 
                 <div id="utover_boks"> <!-- Div for utøverregistrering og funksjoner for det -->
                     <form action="" method ="post" name='registrer'>
-                        <table border="1">
+                        <table>
                             <th>Utøvere</th>
                             <th></th><th></th>
                             <tr>
@@ -144,7 +158,6 @@
                                 <td></td>
                             </tr>
                             <?php
-                            include 'db_connect.php';
                             $resultUtover = $db->query("select * from ovelser");
 
                             while ($row = $resultUtover->fetch_assoc()) {
@@ -158,14 +171,14 @@
                             }
                             ?>
                         </table>
-                        <input class="btn btn-secondary" type="submit" name="registrer_utover" value="registrer" />
+                        <input class="btn btn-secondary" type="submit" name="registrer_utover" value="Registrer utøver" />
                     </form>
+
+                    <br><br><br>
 
                     <form action="" method ="post">
                         <table border="1">
                             <?php
-                            include 'db_connect.php';
-
                             $utover_funksjoner = new Utover($db);
 
                             if (isset($_REQUEST['registrer_utover'])) {//registrere ny utøver
@@ -185,11 +198,8 @@
                                 }
                             }
                             ?></table>
-                        
-                        <table>
-                        <?php
-                        include 'db_connect.php';
 
+                        <?php
                         $utover_funksjoner->skriv_utover();
 
                         if (isset($_REQUEST['slett_u_knp'])) { //slette utover
@@ -202,15 +212,44 @@
 
                         echo '<div id="txtskrivUt"><b></b></div>';
                         ?>
-                        <br>
+                    </form>
+                </div>
+                <div id="publikum_oversikt"> <!-- Div for utskrift av publikumdeltagelse -->
+                    </form>
+                    <form name ="visPublikum" action ="" method="post">
+                        <input type="text" name="publikum_valg" id="publikum_tekst" placeholder="Skriv inn øvelse...">
+                        <input class="btn btn-secondary" type="submit" name="vis_publikum" value="Vis Publikum" />
+
+                        <table class="tablesa">
+                            <col width="75"/>
+                            <col width="75"/>
+                            <col width="75"/>
+                            <col width="75"/>
+                            <tr>
+                                <th>Navn</th>
+                                <th>Tlf</th>
+                                <th>Epost</th>
+                                <th>Adresse</th>
+                            </tr>
+                            <?php
+                            $publikum_funksjoner = new Registrer($db);
+
+                            if (isset($_REQUEST["vis_publikum"])) {
+                                $publikum_ovelse = $_REQUEST["publikum_valg"];
+                                if ($publikum_ovelse == "") {
+                                    echo 'Feltet er tomt';
+                                } else {
+                                    $publikum_funksjoner->skrivut_publikum($publikum_ovelse);
+                                }
+                            }
+                            ?>
                         </table>
+
                     </form>
                 </div>
             </div>
 
-            <div id="publikum_oversikt"> <!-- Div for utskrift av publikumdeltagelse -->
 
-            </div>
         </div>
 
         <div class="container">

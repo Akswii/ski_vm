@@ -44,7 +44,7 @@ error_reporting(0);
         <script type="text/javascript" src="JS/validering.js"></script>
     </head>
 
-    <body>
+    <body style="margin:0;">
 
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -172,6 +172,7 @@ error_reporting(0);
                                 $epost = $_REQUEST["epost"];
                                 $ovelse = $_REQUEST["ovelser"];
 
+
                                 if (!preg_match("/^[a-zæøåA-ZÆØÅ ]{2,20}$/", $navn)) {
                                     echo "Feil i navnet, må være mellom 2 og 20 tegn!<br/>";
                                     $OK = false;
@@ -239,10 +240,10 @@ error_reporting(0);
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="javascript/jquery.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="JS/jquery.min.js"><\/script>')</script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-        <script src="javascript/bootstrap.min.js"></script>
+        <script src="JS/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="javascript/ie10-viewport-bug-workaround.js"></script>
+        <script src="JS/ie10-viewport-bug-workaround.js"></script>
     </body>
 </html>

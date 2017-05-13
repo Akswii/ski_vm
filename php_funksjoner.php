@@ -8,12 +8,8 @@ class Ovelse {
         $this->db = $db_inn;
     }
 
-    public function slett_o($inn_valgid) {//slette øvelse
-        $boks_id = $inn_valgid;
-
-        foreach ($boks_id as $valgt) {
-            $this->db->query("DELETE FROM ovelser where ovelses_id = '$valgt'");
-        }
+    public function slett_o($slett_valg) {//slette øvelse
+        $this->db->query("DELETE FROM ovelser where ovelses_id = '$slett_valg'");
         return true;
     }
 
@@ -21,21 +17,20 @@ class Ovelse {
         $navn = $inn_navn;
         $datoen = $inn_dato;
         $tpunkt = $inn_tpunkt;
-        $boks_id = $inn_id;
+        $oppdater_id = $inn_id;
 
-        foreach ($boks_id as $valgt) {
-            $sql = "UPDATE `ovelser` SET `navn`='$navn',`dato`='$datoen',`tid`='$tpunkt' WHERE ovelses_id = '$valgt'";
-            $resultat = $this->db->query($sql);
 
-            if (!$resultat) {
-                echo "Error";
+        $sql = "UPDATE `ovelser` SET `navn`='$navn',`dato`='$datoen',`tid`='$tpunkt' WHERE ovelses_id = '$oppdater_id'";
+        $resultat = $this->db->query($sql);
+
+        if (!$resultat) {
+            echo "Error";
+        } else {
+            $antallRader = $this->db->affected_rows;
+            if ($antallRader <= 0) {
+                echo "kunne ikke sette inn dataene i databasen!";
             } else {
-                $antallRader = $this->db->affected_rows;
-                if ($antallRader <= 0) {
-                    echo "kunne ikke sette inn dataene i databasen!";
-                } else {
-                    return true;
-                }
+                return true;
             }
         }
     }
@@ -66,10 +61,11 @@ class Ovelse {
             $navn = $row['navn'];
             $tidspunkt = $row['tid'];
             $dato = $row['dato'];
-            echo "<tr><td>" . $navn . "</td>" . "<td>" . $dato . "</td>" . "<td>" . $tidspunkt . "</td>" . "<td>"
-            . "<input type='checkbox' name ='valg_id[]' value='$id' id='slett_select'/></td></tr>";
+            echo "<tr><td><input type='text' name='oppdater_navn', value='$navn'/></td>" . "<td><input type='date' name='oppdater_dato' value='$dato'/></td>"
+            . "<td><input type='time' name='oppdater_tid' value='$tidspunkt'/></td>";
+            echo "<td><input type='image' id='update_btn' name='oppdater_knapp' value='" . $id . "' src='update_button.png'/></td>";
+            echo "<td><input type='image' id='delete_btn' name='slett_knapp' value='" . $id . "' src='delete_icon.png'/></td>";
         }
-        
     }
 
 }
@@ -80,6 +76,24 @@ class Registrer {
 
     function __construct($db_inn) {
         $this->db = $db_inn;
+    }
+
+    public function skrivut_publikum($inn_ovelse) {
+        $result = $this->db->query("select * FROM publikum WHERE ovelser LIKE '%$inn_ovelse%'"); // Skriv ut publikum til X øvelse
+        $validering = $this->db->affected_rows;
+
+        if ($validering > 0) {
+            echo 'Publikum som skal på øvelsen: ' . $inn_ovelse;
+            while ($row = $result->fetch_assoc()) {
+                $navn = $row['navn'];
+                $tlf = $row['tlf'];
+                $epost = $row['epost'];
+                $adresse = $row['adresse'];
+                echo "<tr><td>" . $navn . "</td>" . "<td>" . $tlf . "</td>" . "<td>" . $epost . "</td>" . "<td>" . $adresse . "</td></tr>";
+            }
+        } else {
+            echo 'Søket ga ingen treff.';
+        }
     }
 
     function skrivut_p() {
@@ -96,7 +110,7 @@ class Registrer {
 
     public function registrer_p($inn_navn, $inn_tlf, $inn_epost, $inn_adresse, $inn_ovelser) {
         $ovelse_p = "";
-        
+
         foreach ($inn_ovelser as $ovelse) {
             echo $ovelse . ", ";
             $ovelse_p .= $ovelse . ", ";
