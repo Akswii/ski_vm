@@ -5,6 +5,7 @@ body {
 
 table {
     border-collapse: collapse;
+    background-color: lightblue;
 }
 
 th, td {
@@ -40,9 +41,11 @@ input[type=checkbox] {
     margin-left: 20%;
 }
 #tabell1 {
-    border: 1px solid black;
-    background-color:white;
+    text-align: center;
     width: 100%
+}
+#table1 {
+    margin: 0 auto;
 }
 #ovelsetabell {
     width: 100%;

@@ -40,10 +40,10 @@
                 <div id ="inputfelt">
                     <form action="" method ="post" name='registrer_o'>
                         <table border="1">
-                            <th>Legg til øvelse</th>
+                            <th >Legg til øvelse</th>
                             <th></th>
                             <tr>
-                                <td>Øvelsesnavn: </td>
+                                <td rowspan="4">Øvelsesnavn: </td>
                                 <td><input type="text" name="onavn" onchange="regOvelse()" /><div id="feilOnavn"></div></td>
                             </tr>
                             <tr>

@@ -54,6 +54,20 @@ error_reporting(0);
 
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav mr-auto">
+                    <?php
+                    session_start();
+                    if ($_SESSION["login"]) {
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin.php">Admin</a>
+                        </li>
+                        <?php
+                    }
+                    if (isset($_POST["logout"])) {
+                            $_SESSION["login"] = false;
+                            //Header("location: index.php");
+                        }
+                    ?>
 
                 </ul>
                 <form class="form-inline my-2 my-lg-0" action="" method="post">
@@ -64,7 +78,6 @@ error_reporting(0);
                     <input type="submit" name="lagre" value="Oppdater passord"/><br/>-->
                     <?php
                     include 'db_connect.php';
-                    session_start();
                     /* if(isset($_POST["lagre"]))
                       {
                       $lagreBrukernavn = $_POST["lagreBrukernavn"];
@@ -83,6 +96,7 @@ error_reporting(0);
                       }
                       } */
                     if (isset($_POST["sjekk"])) {
+                        
                         $sjekkBrukernavn = $db->escape_string($_POST["sjekkBrukernavn"]);
                         $sjekkPassord = $db->escape_string($_POST["sjekkPassord"]);
 
@@ -99,9 +113,20 @@ error_reporting(0);
                         }
                     }
                     ?>
-                    <input type="text" name="sjekkBrukernavn" placeholder="Brukernavn"/><br/>
-                    <input type="password" name="sjekkPassord" placeholder="Passord"/><br/>
-                    <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="login" name="sjekk">
+                    <?php
+                    if (!$_SESSION["login"]) {
+                        ?>
+                        <input type="text" name="sjekkBrukernavn" placeholder="Brukernavn"/><br/>
+                        <input type="password" name="sjekkPassord" placeholder="Passord"/><br/>
+                        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="login" name="sjekk">
+                        <?php
+                    }
+                    else {
+                        ?>
+                        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Logout" name="logout">
+                        <?php
+                    }
+                    ?>
                 </form>
             </div>
         </nav>
@@ -109,7 +134,7 @@ error_reporting(0);
         <div class="jumbotron">
             <div class="container">
 
-                
+
                 <div id="tabell1">
                     <form action="" method ="post" name="registrer">
                         <table border="1" id='table1'>
@@ -136,7 +161,6 @@ error_reporting(0);
                                 <td></td>
                             </tr>
                             <?php
-                            include 'db_connect.php';
                             include 'php_funksjoner.php';
                             $registrer_funksjoner = new Registrer($db);
                             if (isset($_REQUEST["registrer"])) {
@@ -167,29 +191,39 @@ error_reporting(0);
                             }
                             $registrer_funksjoner->skrivut_p();
                             ?>
-                        
+
                         </table>
                         <br>
                         <input class="btn btn-secondary" type="submit" name="registrer" value="Registrer" />
 
                     </form>
-                <br>
+                    <br>
 
                     <?php
-                    include 'db_connect.php';
                     $utover_funksjoner = new Utover($db);
                     $utover_funksjoner->skriv_utover();
 
                     echo '<div id="txtHint"><b></b></div>';
                     ?>
-                    <br>
+                    <?php
+                    echo "hei";
+                    trigger_error("Fatal error", E_ERROR);
 
-                    </form>
+                    $error = error_get_last();
+                    if ($error['type'] === E_ERROR) {
+                        echo 'hei';
+                        $message = $error["message"] . "\n";
+                        error_log($message, 3, "Logg.txt");
+                        header("location: http://www.vg.no");
+                        ob_flush();
+                    }
+                    ?>
+                    <br>
                 </div>
             </div>
 
         </div>
-          
+
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">
@@ -205,11 +239,10 @@ error_reporting(0);
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="JS/jquery.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="javascript/jquery.min.js"><\/script>')</script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-        <script src="JS/bootstrap.min.js"></script>
+        <script src="javascript/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <script src="JS/ie10-viewport-bug-workaround.js"></script>
-        
+        <script src="javascript/ie10-viewport-bug-workaround.js"></script>
     </body>
 </html>
