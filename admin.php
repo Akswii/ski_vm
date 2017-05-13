@@ -57,7 +57,7 @@
 
                         </table>
                         <input class="btn btn-secondary" type="submit" name="registrer_ovelse" value="Registrer øvelse"/>
-                        
+
                         <br><br><br><br>
 
                         <table class="tablesa">
@@ -76,7 +76,7 @@
                             include 'db_connect.php'; //koble opp til databasen
                             include 'php_funksjoner.php'; //alle php funksjoner
 
-                            $ovelse_funksjoner = new Ovelse($db); //lage ett objekt av ovelse klassen
+                            $ovelse_funksjoner = new Ovelse($db); //lage et objekt av ovelse klassen
 
                             if (isset($_REQUEST['slett_knp'])) { //slette øvelse
                                 $boks_id = $_REQUEST['valg_id'];
@@ -96,11 +96,11 @@
                                 }
                             }
 
+                            $idag = new DateTime();
                             if (isset($_REQUEST['registrer_ovelse'])) {//registrere ny øvelse
                                 $navn = $_REQUEST['onavn'];
                                 $dato = $_REQUEST['dato'];
                                 $tpunkt = $_REQUEST['tidspunkt'];
-                                $idag = new DateTime();
                                 $formatidag = $idag->format('Y-m-d');
                                 if ($dato < $formatidag) {
                                     echo 'Datoen er utgått<br>';
@@ -163,7 +163,7 @@
                     </form>
 
                     <br><br><br>
-                    
+
                     <form action="" method ="post">
                         <table border="1">
                             <?php
@@ -188,7 +188,7 @@
                                 }
                             }
                             ?></table>
-                        
+
                         <?php
                         include 'db_connect.php';
 
@@ -207,12 +207,12 @@
                     </form>
                 </div>
                 <div id="publikum_oversikt"> <!-- Div for utskrift av publikumdeltagelse -->
-              </form>
+                    </form>
                     <form name ="visPublikum" action ="" method="post">
-                    <input type="text" name="publikum_valg" id="publikum_tekst" placeholder="Skriv inn øvelse...">
-                    <input class="btn btn-secondary" type="submit" name="vis_publikum" value="Vis Publikum" />
-                         
-                    <table class="tablesa">
+                        <input type="text" name="publikum_valg" id="publikum_tekst" placeholder="Skriv inn øvelse...">
+                        <input class="btn btn-secondary" type="submit" name="vis_publikum" value="Vis Publikum" />
+
+                        <table class="tablesa">
                             <col width="75"/>
                             <col width="75"/>
                             <col width="75"/>
@@ -223,28 +223,26 @@
                                 <th>Epost</th>
                                 <th>Adresse</th>
                             </tr>
-                    <?php 
-                        include 'db_connect.php';
-                        $publikum_funksjoner = new Registrer($db);
-                        
-                        if(isset($_REQUEST["vis_publikum"]))
-                        {
-                            $publikum_ovelse = $_REQUEST["publikum_valg"];
-                            if($publikum_ovelse== "") {
-                                echo 'Feltet er tomt';
+                            <?php
+                            include 'db_connect.php';
+                            $publikum_funksjoner = new Registrer($db);
+
+                            if (isset($_REQUEST["vis_publikum"])) {
+                                $publikum_ovelse = $_REQUEST["publikum_valg"];
+                                if ($publikum_ovelse == "") {
+                                    echo 'Feltet er tomt';
+                                } else {
+                                    $publikum_funksjoner->skrivut_publikum($publikum_ovelse);
+                                }
                             }
-                            else {
-                                $publikum_funksjoner->skrivut_publikum($publikum_ovelse);
-                            }
-                        }
-                        ?>
-                    </table>
-                        
+                            ?>
+                        </table>
+
                     </form>
-            </div>
+                </div>
             </div>
 
-            
+
         </div>
 
         <div class="container">

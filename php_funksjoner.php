@@ -66,7 +66,8 @@ class Ovelse {
             $navn = $row['navn'];
             $tidspunkt = $row['tid'];
             $dato = $row['dato'];
-            echo "<tr><td>" . $navn . "</td>" . "<td>" . $dato . "</td>" . "<td>" . $tidspunkt . "</td>" . "<td>"
+            echo "<tr><td><input type='text' name='oppdater_navn', value='$navn'/></td>" . "<td><input type='date' name='oppdater_dato' value='$dato'/></td>" 
+                    . "<td><input type='time' name='oppdater_tid' value='$tidspunkt'/></td>" . "<td>"
             . "<input type='checkbox' name ='valg_id[]' value='$id' id='slett_select'/></td></tr>";
         }
         

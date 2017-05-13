@@ -40,11 +40,22 @@ error_reporting(0);
                     xmlhttp.send();
                 }
             }
+
+            var myVar;
+
+            function myFunction() {
+                myVar = setTimeout(showPage, 3000);
+            }
+
+            function showPage() {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("myDiv").style.display = "block";
+            }
         </script>
         <script type="text/javascript" src="JS/validering.js"></script>
     </head>
 
-    <body>
+    <body onload="myFunction()" style="margin:0;">
 
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,7 +120,7 @@ error_reporting(0);
         <div class="jumbotron">
             <div class="container">
 
-                
+
                 <div id="tabell1">
                     <form action="" method ="post" name="registrer">
                         <table border="1" id='table1'>
@@ -168,13 +179,13 @@ error_reporting(0);
                             }
                             $registrer_funksjoner->skrivut_p();
                             ?>
-                        
+
                         </table>
                         <br>
                         <input class="btn btn-secondary" type="submit" name="registrer" value="Registrer" />
 
                     </form>
-                <br>
+                    <br>
 
                     <?php
                     include 'db_connect.php';
@@ -190,7 +201,7 @@ error_reporting(0);
             </div>
 
         </div>
-          
+
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">
@@ -211,6 +222,6 @@ error_reporting(0);
         <script src="JS/bootstrap.min.js"></script>
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
         <script src="JS/ie10-viewport-bug-workaround.js"></script>
-        
+
     </body>
 </html>
