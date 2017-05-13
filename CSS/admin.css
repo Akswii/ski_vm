@@ -24,7 +24,7 @@ body {
 
 table {
     border-collapse: collapse;
-    background-color:lightblue;
+    background-color:lightblue; 
 }
 
 th, td {

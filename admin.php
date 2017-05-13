@@ -233,6 +233,7 @@ error_reporting(0);
                                 <th>Tlf</th>
                                 <th>Epost</th>
                                 <th>Adresse</th>
+                                <th>Påmeldte øvelser</th>
                             </tr>
                             <?php
                             $publikum_funksjoner = new Registrer($db);
