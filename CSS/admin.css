@@ -24,7 +24,7 @@ body {
 
 table {
     border-collapse: collapse;
-    background-color:lightblue;
+    background-color:inherit;
 }
 
 th, td {
@@ -36,7 +36,7 @@ th, td {
     border-right: 1px solid #ddd;
 }
 th {
-    background-color: #4CAF50;
+    background-color: gray;
     color: white;
 }
 #publikum_oversikt{

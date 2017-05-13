@@ -21,16 +21,29 @@
 
     <body>
         <?php
-        /* session_start();
-          if (!$_SESSION["login"]) {
-          Header("location: index.php");
-          } */
+        session_start();
+        if (!$_SESSION["login"]) {
+            Header("location: index.php");
+        }
         ?>
         <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand" href="index.php">Ski VM</a>
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+                    <?php
+                    if ($_SESSION["admin"]) {
+                        ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin.php">Admin</a>
+                        </li>
+                        <?php
+                    }
+                    ?>
+                </ul>
+            </div>
         </nav>
 
         <!-- Main jumbotron for a primary marketing message or call to action -->
@@ -126,8 +139,6 @@
                             $ovelse_funksjoner->skrivut_o();
                             ?>
                         </table>
-                        <input class="btn btn-secondary" type='submit' name='slett_knp' value='Slett øvelse'/>
-                        <input class="btn btn-secondary" type='submit' name='oppdater_knp' value='Oppdater øvelse'/>
                     </form>
                 </div>
 
@@ -147,7 +158,6 @@
                                 <td></td>
                             </tr>
                             <?php
-                            include 'db_connect.php';
                             $resultUtover = $db->query("select * from ovelser");
 
                             while ($row = $resultUtover->fetch_assoc()) {
@@ -169,8 +179,6 @@
                     <form action="" method ="post">
                         <table border="1">
                             <?php
-                            include 'db_connect.php';
-
                             $utover_funksjoner = new Utover($db);
 
                             if (isset($_REQUEST['registrer_utover'])) {//registrere ny utøver
@@ -192,8 +200,6 @@
                             ?></table>
 
                         <?php
-                        include 'db_connect.php';
-
                         $utover_funksjoner->skriv_utover();
 
                         if (isset($_REQUEST['slett_u_knp'])) { //slette utover
@@ -226,7 +232,6 @@
                                 <th>Adresse</th>
                             </tr>
                             <?php
-                            include 'db_connect.php';
                             $publikum_funksjoner = new Registrer($db);
 
                             if (isset($_REQUEST["vis_publikum"])) {

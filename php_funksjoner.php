@@ -63,9 +63,8 @@ class Ovelse {
             $dato = $row['dato'];
             echo "<tr><td><input type='text' name='oppdater_navn', value='$navn'/></td>" . "<td><input type='date' name='oppdater_dato' value='$dato'/></td>"
             . "<td><input type='time' name='oppdater_tid' value='$tidspunkt'/></td>";
-            echo "<td><input type='image' id='delete_btn' name='slett_knapp' value='" . $id . "' src='delete_icon.png'/></td>";
             echo "<td><input type='image' id='update_btn' name='oppdater_knapp' value='" . $id . "' src='update_button.png'/></td>";
-            //. "<input type='checkbox' name ='valg_id[]' value='$id' id='slett_select'/></td></tr>";
+            echo "<td><input type='image' id='delete_btn' name='slett_knapp' value='" . $id . "' src='delete_icon.png'/></td>";
         }
     }
 
